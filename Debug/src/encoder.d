@@ -1,7 +1,4 @@
-src/main.o: ../src/main.c \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/global.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/Controller.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h \
+src/encoder.o: ../src/encoder.c \
  /Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/device/stm32f4xx.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/core/core_cm4.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/core/core_cmInstr.h \
@@ -33,16 +30,7 @@ src/main.o: ../src/main.c \
  /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_rng.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_can.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dac.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dcmi.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/led.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/pwm.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/encoder.h
-
-/Users/nguyenbui/Documents/workspace/Micromouse/inc/global.h:
-
-/Users/nguyenbui/Documents/workspace/Micromouse/inc/Controller.h:
-
-/Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h:
+ /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dcmi.h
 
 /Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/device/stm32f4xx.h:
 
@@ -107,9 +95,3 @@ src/main.o: ../src/main.c \
 /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dac.h:
 
 /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dcmi.h:
-
-/Users/nguyenbui/Documents/workspace/Micromouse/inc/led.h:
-
-/Users/nguyenbui/Documents/workspace/Micromouse/inc/pwm.h:
-
-/Users/nguyenbui/Documents/workspace/Micromouse/inc/encoder.h:

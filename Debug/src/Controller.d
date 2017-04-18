@@ -32,7 +32,9 @@ src/Controller.o: ../src/Controller.c \
  /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dac.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dcmi.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/led.h
+ /Users/nguyenbui/Documents/workspace/Micromouse/inc/led.h \
+ /Users/nguyenbui/Documents/workspace/Micromouse/inc/pwm.h \
+ /Users/nguyenbui/Documents/workspace/Micromouse/inc/encoder.h
 
 /Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/device/stm32f4xx.h:
 
@@ -101,3 +103,7 @@ src/Controller.o: ../src/Controller.c \
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h:
 
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/led.h:
+
+/Users/nguyenbui/Documents/workspace/Micromouse/inc/pwm.h:
+
+/Users/nguyenbui/Documents/workspace/Micromouse/inc/encoder.h:

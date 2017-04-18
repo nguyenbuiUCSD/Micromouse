@@ -6,8 +6,10 @@
 C_SRCS += \
 ../src/Controller.c \
 ../src/delay.c \
+../src/encoder.c \
 ../src/led.c \
 ../src/main.c \
+../src/pwm.c \
 ../src/stm32f4xx_it.c \
 ../src/syscalls.c \
 ../src/system_stm32f4xx.c 
@@ -15,8 +17,10 @@ C_SRCS += \
 OBJS += \
 ./src/Controller.o \
 ./src/delay.o \
+./src/encoder.o \
 ./src/led.o \
 ./src/main.o \
+./src/pwm.o \
 ./src/stm32f4xx_it.o \
 ./src/syscalls.o \
 ./src/system_stm32f4xx.o 
@@ -24,8 +28,10 @@ OBJS += \
 C_DEPS += \
 ./src/Controller.d \
 ./src/delay.d \
+./src/encoder.d \
 ./src/led.d \
 ./src/main.d \
+./src/pwm.d \
 ./src/stm32f4xx_it.d \
 ./src/syscalls.d \
 ./src/system_stm32f4xx.d 
