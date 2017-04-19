@@ -5,6 +5,8 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/Controller.c \
+../src/Driver.c \
+../src/Runner.c \
 ../src/delay.c \
 ../src/encoder.c \
 ../src/led.c \
@@ -16,6 +18,8 @@ C_SRCS += \
 
 OBJS += \
 ./src/Controller.o \
+./src/Driver.o \
+./src/Runner.o \
 ./src/delay.o \
 ./src/encoder.o \
 ./src/led.o \
@@ -27,6 +31,8 @@ OBJS += \
 
 C_DEPS += \
 ./src/Controller.d \
+./src/Driver.d \
+./src/Runner.d \
 ./src/delay.d \
 ./src/encoder.d \
 ./src/led.d \

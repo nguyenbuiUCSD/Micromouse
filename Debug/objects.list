@@ -42,6 +42,8 @@
 "StdPeriph_Driver/src/stm32f4xx_usart.o"
 "StdPeriph_Driver/src/stm32f4xx_wwdg.o"
 "src/Controller.o"
+"src/Driver.o"
+"src/Runner.o"
 "src/delay.o"
 "src/encoder.o"
 "src/led.o"

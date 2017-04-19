@@ -16,5 +16,5 @@
 #define PID_DISABLE 0
 
 void Controller_hardware_init(void );
-
+void Controller_run(int left_distance, int right_distance, int left_speed, int right_speed);
 #endif /* CONTROLLER_H_ */

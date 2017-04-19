@@ -7,8 +7,11 @@
 
 #include "stm32f4xx.h"
 
+
 volatile int32_t global_left_dist = 0;
 volatile int32_t global_right_dist = 0;
+volatile int32_t global_left_speed = 0;
+volatile int32_t global_right_speed = 0;
 
 //PA0	TIM5_CH1	Encoder_R_CHA
 //PA1	TIM5_CH2	Encoder_R_CHB
@@ -55,29 +58,6 @@ void Encoder_Configration(void)
 	setRightEncCount(0);
 }
 
-int32_t getLeftEncCount(void) {
-	//return TIM_GetCounter(TIM2);
-	return -(TIM2->CNT);
-}
-
-int32_t getRightEncCount(void) {
-	//return TIM_GetCounter(TIM5);
-	return -(TIM5->CNT);
-}
-
-
-int32_t getLeftEncCountAndReset(void){
-	int32_t temp = TIM2->CNT;
-	TIM2->CNT = 0;
-	return temp;
-}
-
-int32_t getRightEncCountAndReset(void){
-	int32_t temp = TIM5->CNT;
-	TIM5->CNT = 0;
-	return temp;
-}
-
 int32_t getLeftDistance(void){
 	return (global_left_dist + TIM2->CNT);
 }
@@ -85,3 +65,11 @@ int32_t getRightDistance(void){
 	return (global_right_dist + TIM5->CNT);
 }
 
+void update_speed(void){
+	global_left_speed = TIM2->CNT;
+	TIM2->CNT = 0;
+	global_right_speed = TIM5->CNT;
+	TIM5->CNT = 0;
+	global_left_dist += global_left_speed;
+	global_right_dist += global_right_speed;
+}

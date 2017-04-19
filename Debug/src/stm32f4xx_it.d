@@ -32,7 +32,8 @@ src/stm32f4xx_it.o: ../src/stm32f4xx_it.c \
  /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_can.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dac.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dcmi.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h
+ /Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h \
+ /Users/nguyenbui/Documents/workspace/Micromouse/inc/encoder.h
 
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/stm32f4xx_it.h:
 
@@ -101,3 +102,5 @@ src/stm32f4xx_it.o: ../src/stm32f4xx_it.c \
 /Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc/stm32f4xx_dcmi.h:
 
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h:
+
+/Users/nguyenbui/Documents/workspace/Micromouse/inc/encoder.h:

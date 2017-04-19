@@ -10,6 +10,7 @@
 
 #include "global.h"
 #include "Controller.h"
+#include "Driver.h"
 #include "delay.h"
 #include "led.h"
 #include "pwm.h"
@@ -31,13 +32,15 @@ int main(void) {
 
 LED1_ON;
 LED5_ON;
-delay_ms(10);
+delay_ms(200);
+LED1_OFF;
+LED5_OFF;
+delay_ms(200);
 
-leftspeed = getLeftEncCountAndReset();
-rightspeed = getRightEncCountAndReset();
+Driver_go_straight(200, 200);
+Driver_go_straight(0, 0);
+delay_ms(5000);
 
-printf("left speed %d", leftspeed);
-printf("right speed %d", rightspeed);
 
 /*
 LED1_OFF;
@@ -132,13 +135,7 @@ LED3_OFF;
 LED4_OFF;
 delay_ms(100);
 
-setLeftPwm(500);
-setRightPwm(500);
-delay_ms(3000);
 
-setLeftPwm(0);
-setRightPwm(0);
-delay_ms(30);
 
 */
 

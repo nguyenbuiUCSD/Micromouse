@@ -37,6 +37,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 #include "delay.h"
+#include "encoder.h"
 
 
 /** @addtogroup Template_Project
@@ -151,6 +152,10 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void){
 	Millis++;
+
+	// Get the speed with counts/ms
+	if ((Millis&0x0000000F) == 10)
+		update_speed();
 }
 
 

@@ -8,17 +8,16 @@
 #ifndef ENCODER_H_
 #define ENCODER_H_
 
-int32_t getLeftEncCount(void);
-int32_t getRightEncCount(void);
-
-int32_t getLeftEncCountAndReset(void);
-int32_t getRightEncCountAndReset(void);
+extern int32_t global_left_dist;
+extern int32_t global_right_dist;
+extern int32_t global_left_speed;
+extern int32_t global_right_speed;
 
 int32_t getLeftDistance(void);
 int32_t getRightDistance(void);
 
-void setRightEncCount(int32_t speed);
-void setLeftEncCount(int32_t speed);
+void update_speed(void);
+
 void Encoder_Configration(void);
 
 
