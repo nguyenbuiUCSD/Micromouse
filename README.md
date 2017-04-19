@@ -22,3 +22,16 @@ All issues and bugs are report through github.
 If you want to make contribution to the project. Make a pull request, assign yourself an issues.
 Finish and make a merge request.
 
+Files structure:
+
+/inc: all header files (*.h)
+/src: source file (*.c)
+Other folder are libraries and start up code. Do not modified. All configuration can be done at higher layer.
+
+Layer:
+
+Main -> Runner -> Driver -> Controller -> Standard Peripheral library -> Hardware IO
+|         |         |           |-------> Utilize SPL to implement an median layer between user code and hardware
+|         |         |-------------------> Drive the mouse with left turn, right turn, ... used all fcns from Controller lyer
+|         |-----------------------------> Maze solving algorithm, include search and solve the maze.
+|---------------------------------------> User interface.
