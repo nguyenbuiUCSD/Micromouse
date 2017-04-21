@@ -143,8 +143,8 @@ C_DEPS += \
 StdPeriph_Driver/src/%.o: ../StdPeriph_Driver/src/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Compiler'
-	@echo $(PWD)
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F405RGTx -DSTM32F4 -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F40XX -DSTM32F40_41xxx -I"/Users/nguyenbui/Documents/workspace/Micromouse/inc" -I"/Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/core" -I"/Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/device" -I"/Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
+	@echo %cd%
+	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32F405RGTx -DSTM32F4 -DSTM32 -DDEBUG -DUSE_STDPERIPH_DRIVER -DSTM32F40XX -DSTM32F40_41xxx -I"C:/Users/phucn/workspace/Micromouse/inc" -I"C:/Users/phucn/workspace/Micromouse/CMSIS/core" -I"C:/Users/phucn/workspace/Micromouse/CMSIS/device" -I"C:/Users/phucn/workspace/Micromouse/StdPeriph_Driver/inc" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

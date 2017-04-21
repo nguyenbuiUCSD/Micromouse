@@ -5,28 +5,18 @@
  *      Author: jocelyntran
  */
 #include "stm32f4xx.h"
-
-//#include "global.h"
-#include "sensor.h"
+#include <stdio.h>
+#include "global.h"
 #include "adc.h"
 #include "delay.h"
-#include "pwm.h"
 #include "led.h"
-#include <stdio.h>
-#include "encoder.h"
 
-int reflectionRate = 1000;//which is 1.000 (converted to ingeter)
-
-int32_t volMeter = 0;
-int32_t voltage = 0;
-int32_t FLSensor = 0;
-int32_t FRSensor = 0;
-int32_t LDSensor = 0;
-int32_t RDSensor = 0;
-int32_t Outz = 0;
-int32_t aSpeed = 0;//angular velocity
-int32_t angle = 0;
-
+volatile int32_t volMeter = 0;
+volatile int32_t voltage = 0;
+volatile int32_t FLSensor = 0;
+volatile int32_t FRSensor = 0;
+volatile int32_t LDSensor = 0;
+volatile int32_t RDSensor = 0;
 
 /*read IR sensors*/
 void readSensor(void)
@@ -72,29 +62,14 @@ void readSensor(void)
 	RD_EM_OFF;
 	if(RDSensor < 0)
 		RDSensor = 0;
-	elapseMicros(550,curt);
+	elapseMicros(500,curt);
 
-	FLSensor = FLSensor*reflectionRate/1000;
-	FRSensor = FRSensor*reflectionRate/1000;
-	LDSensor = LDSensor*reflectionRate/1000;
-	RDSensor = RDSensor*reflectionRate/1000;
+	FLSensor /= 10;
+	FRSensor /= 10;
+	LDSensor /= 10;
+	RDSensor /= 10;
 }
 
-
-/*read gyro*/
-void readGyro(void)
-{	                      //k=19791(sum for sample in 1 second)    101376287 for 50 seconds with 5000 samples
-	int i;
-	int sampleNum = 20;
-	aSpeed = 0;
-	for(i=0;i<sampleNum;i++)
-	aSpeed += read_Outz;
-	aSpeed *= 50000/sampleNum;
-	aSpeed -= 92980000;
-	aSpeed /= 50000;
-	aSpeed /= 4;
-	angle += aSpeed;
-}
 
 
 /*read voltage meter*/
@@ -107,29 +82,6 @@ void readVolMeter(void)
 
 void lowBatCheck(void)
 {
-  if(voltage < 700) //alert when battery Voltage lower than 7V
-	{
-
-		setLeftPwm(0);
-		setRightPwm(0);
-
-		while(1)
-		{
-			// displayMatrix("Lbat");
-			//beep_on;
-			ALL_LED_OFF;
-			delay_ms(200);
-
-			// clearScreen();
-			//beep_off;
-			ALL_LED_ON;
-			delay_ms(200);
-		}
-	}
-  else {
-		  // displayInt(voltage);
-		  delay_ms(1000);
-	}
 }
 
 

@@ -10,18 +10,24 @@
 
 extern int reflectionRate;
 
-extern int32_t volMeter;
-extern int32_t voltage;
+extern volatile int32_t volMeter;
+extern volatile int32_t voltage;
 
-/* Sensors: front left, front right, left diagonal, right diagonal */
-extern int32_t FLSensor;
-extern int32_t FRSensor;
-extern int32_t LDSensor;
-extern int32_t RDSensor;
+/*
+ * Sensors: front left, front right, left diagonal, right diagonal
+ * Pins configuration for Basic mouse:
+ * 	Left Diagonal(LD) RX --> Pin PB0 --> ADC1 channel 8
+ * 	Left Front (LF) RX --> Pin PB1 --> ADC1 channel 9
+ *  Right Front (RF) RX --> Pin PC4 --> ADC1 channel 14
+ *  Right Diagonal (RD) RX --> Pin PC5 --> ADC1 channel 15
+ *  Voltage Meter --> Pin PA3 --> ADC1 channel 3
+ */
 
-extern int32_t Outz;
-extern int32_t aSpeed;
-extern int32_t angle;
+extern volatile int32_t FLSensor;
+extern volatile int32_t FRSensor;
+extern volatile int32_t LDSensor;
+extern volatile int32_t RDSensor;
+
 
 void readSensor(void);
 void readGyro(void);
