@@ -8,12 +8,12 @@
 /*
  * All the constant scale to 1000
  */
-#define LKP 40000
-#define LKI 0
-#define LKD 0
-#define RKP 40000
-#define RKI 0
-#define RKD 0
+#define LKP 1100
+#define LKI 17
+#define LKD 28
+#define RKP 1100
+#define RKI 17
+#define RKD 28
 
 volatile int left_old_err, left_intergral;
 volatile int right_old_err, right_intergral;

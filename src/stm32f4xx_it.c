@@ -154,7 +154,8 @@ void SysTick_Handler(void){
 	Millis++;
 
 	// Get the speed with counts/ms
-	if ((Millis&0x0000000F) == 10)
+	//	This only use for basic mouse with small number of count
+	//if ((Millis&0x0000000F) == 10)
 		update_speed();
 }
 

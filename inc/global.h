@@ -34,9 +34,23 @@ typedef int Cell_label;
 #define E_3	1000 // 10^3
 #define E_2	100 // 10^2
 #define CELL_WIDTH 180
-#define MOUSE_WIDTH 83	// 65mm from left wheels to right wheels
-#define L_100MM2COUNT_RATIO 1150  // 100 millimeters = 1110 count
-#define R_100MM2COUNT_RATIO 1150  // 100 millimeters = 1110 count
+
+/*
+ * Using the new mice
+ */
+#define L_100MM2COUNT_RATIO 9000  // 100 millimeters = 1110 count
+#define R_100MM2COUNT_RATIO 9000  // 100 millimeters = 1110 count
+#define MOUSE_WIDTH 69	// 65mm from left wheels to right wheels
+
+
+
+/*
+ * These setting are for the basic mouse board
+ * #define L_100MM2COUNT_RATIO 1150  // 100 millimeters = 1110 count
+ * #define R_100MM2COUNT_RATIO 1150  // 100 millimeters = 1110 count
+ * #define MOUSE_WIDTH 83	// 65mm from left wheels to right wheels
+ */
+
 
 /*
  * Controller Define

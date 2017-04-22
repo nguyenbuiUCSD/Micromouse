@@ -26,7 +26,22 @@ void setRightEncCount(int32_t cnt) {
 	TIM5->CNT = cnt;
 }
 
-
+# warning Check board configuration
+/*
+ * This code is use for the advantage mice. with is using TIM3 instead of TIM2
+ *
+ * For basic mice, change everything from 2 to 3
+ * GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_15;
+ * GPIO_Init(GPIOA, &GPIO_InitStructure);
+ * GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+ * GPIO_Init(GPIOB, &GPIO_InitStructure);
+ *
+ *
+ * GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM5);
+ * GPIO_PinAFConfig(GPIOA, GPIO_PinSource1, GPIO_AF_TIM5);
+ * GPIO_PinAFConfig(GPIOA, GPIO_PinSource15, GPIO_AF_TIM2);
+ * GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF_TIM2);
+ */
 void Encoder_Configration(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -34,24 +49,24 @@ void Encoder_Configration(void)
 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_15;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
-	GPIO_Init(GPIOB, &GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6|GPIO_Pin_7;
+	GPIO_Init(GPIOC, &GPIO_InitStructure);
 
 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource0, GPIO_AF_TIM5);
 	GPIO_PinAFConfig(GPIOA, GPIO_PinSource1, GPIO_AF_TIM5);
-	GPIO_PinAFConfig(GPIOA, GPIO_PinSource15, GPIO_AF_TIM2);
-	GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF_TIM2);
+	GPIO_PinAFConfig(GPIOC, GPIO_PinSource6, GPIO_AF_TIM3);
+	GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_TIM3);
 
   TIM_SetAutoreload (TIM5, 0xffffffff);//0xffffffff is the max value for 32 bit, the autoreload value will be 0xffff for 16 bit timer
-	TIM_SetAutoreload (TIM2, 0xffffffff);
+	TIM_SetAutoreload (TIM3, 0xffffffff);
 	/* Configure the encoder */
 	TIM_EncoderInterfaceConfig(TIM5, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Falling);//rising rising or rising falling will help you to swithc the direction for encoder at quardrature mode
-	TIM_EncoderInterfaceConfig(TIM2, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);//if the setting is rising rising and the encoder counts decreases when wheel spin forward, just change it to rising falling
+	TIM_EncoderInterfaceConfig(TIM3, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);//if the setting is rising rising and the encoder counts decreases when wheel spin forward, just change it to rising falling
 	/* TIM4 counter enable */
 	TIM_Cmd(TIM5, ENABLE);
-	TIM_Cmd(TIM2, ENABLE);
+	TIM_Cmd(TIM3, ENABLE);
 
 	// Reset both register
 	setLeftEncCount(0);
@@ -59,15 +74,15 @@ void Encoder_Configration(void)
 }
 
 int32_t getLeftDistance(void){
-	return (global_left_dist + TIM2->CNT);
+	return (global_left_dist + TIM3->CNT);
 }
 int32_t getRightDistance(void){
 	return (global_right_dist + TIM5->CNT);
 }
 
 void update_speed(void){
-	global_left_speed = TIM2->CNT;
-	TIM2->CNT = 0;
+	global_left_speed = TIM3->CNT;
+	TIM3->CNT = 0;
 	global_right_speed = TIM5->CNT;
 	TIM5->CNT = 0;
 	global_left_dist += global_left_speed;

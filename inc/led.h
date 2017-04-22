@@ -16,6 +16,14 @@
  *  Right Diagonal (RD) TX --> Pin PC0
  */
 
+/*
+ * Pins configuration for Basic mouse:
+ * 	Left Diagonal(LD) TX --> Pin PC3
+ * 	Low Front (FL) TX --> Pin PC1
+ *  High Front (FH) TX --> Pin PC2
+ *  Right Diagonal (RD) TX --> Pin PC0
+ */
+
 #define LED1_OFF    GPIO_SetBits(GPIOB, GPIO_Pin_12)
 #define LED1_ON   GPIO_ResetBits(GPIOB, GPIO_Pin_12)
 #define LED2_OFF    GPIO_SetBits(GPIOB, GPIO_Pin_13)

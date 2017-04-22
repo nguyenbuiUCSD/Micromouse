@@ -34,23 +34,23 @@ int main(void) {
 
 LED1_ON;
 LED5_ON;
-readSensor();
+//readSensor();
 
 delay_ms(20);
 LED1_OFF;
 LED5_OFF;
 
 Driver_go_straight(0, 0);
-Driver_go_straight(200, 10);
-Driver_go_straight(200, 20);
-Driver_go_straight(200, 50);
-Driver_go_straight(200, 20);
-Driver_go_straight(200, 10);
-Driver_go_straight(200, -10);
-Driver_go_straight(200, -20);
-Driver_go_straight(200, -50);
-Driver_go_straight(200, -20);
-Driver_go_straight(200, -10);
+Driver_go_straight(200, 100);
+Driver_go_straight(200, 200);
+Driver_go_straight(200, 500);
+Driver_go_straight(200, 200);
+Driver_go_straight(200, 100);
+Driver_go_straight(200, -100);
+Driver_go_straight(200, -200);
+Driver_go_straight(200, -500);
+Driver_go_straight(200, -200);
+Driver_go_straight(200, -100);
 Driver_go_straight(0, 0);
 
 
