@@ -19,7 +19,7 @@ volatile int32_t global_right_speed = 0;
 //PB3	TIM2_CH2	Encoder_L_CHB
 
 void setLeftEncCount(int32_t cnt) {
-	TIM2->CNT = cnt;
+	TIM3->CNT = (int16_t)cnt;
 }
 
 void setRightEncCount(int32_t cnt) {
@@ -45,8 +45,7 @@ void setRightEncCount(int32_t cnt) {
 void Encoder_Configration(void)
 {
 	GPIO_InitTypeDef GPIO_InitStructure;
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5|RCC_APB1Periph_TIM2, ENABLE);
-
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM5|RCC_APB1Periph_TIM3, ENABLE);
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
 	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1;
@@ -60,7 +59,7 @@ void Encoder_Configration(void)
 	GPIO_PinAFConfig(GPIOC, GPIO_PinSource7, GPIO_AF_TIM3);
 
   TIM_SetAutoreload (TIM5, 0xffffffff);//0xffffffff is the max value for 32 bit, the autoreload value will be 0xffff for 16 bit timer
-	TIM_SetAutoreload (TIM3, 0xffffffff);
+	TIM_SetAutoreload (TIM3, 0xffff);
 	/* Configure the encoder */
 	TIM_EncoderInterfaceConfig(TIM5, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Falling);//rising rising or rising falling will help you to swithc the direction for encoder at quardrature mode
 	TIM_EncoderInterfaceConfig(TIM3, TIM_EncoderMode_TI12, TIM_ICPolarity_Rising, TIM_ICPolarity_Rising);//if the setting is rising rising and the encoder counts decreases when wheel spin forward, just change it to rising falling
@@ -74,14 +73,18 @@ void Encoder_Configration(void)
 }
 
 int32_t getLeftDistance(void){
-	return (global_left_dist + TIM3->CNT);
+	// CNT is uint32_t
+	// Manually cast from signed 16bit to signed 32bit
+	return (global_left_dist + (int16_t)TIM3->CNT);
 }
 int32_t getRightDistance(void){
 	return (global_right_dist + TIM5->CNT);
 }
 
 void update_speed(void){
-	global_left_speed = TIM3->CNT;
+	// CNT is uint32_t
+	// Manually cast from signed 16bit to signed 32bit
+	global_left_speed = (int16_t)TIM3->CNT;
 	TIM3->CNT = 0;
 	global_right_speed = TIM5->CNT;
 	TIM5->CNT = 0;

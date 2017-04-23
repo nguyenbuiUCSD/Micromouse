@@ -10,6 +10,8 @@
 
 int pid_left_motor(int err);
 int pid_right_motor(int err);
+int sensor_pid_left_motor(int err);
+int sensor_pid_right_motor(int err);
 void pid_reset(void);
 
 

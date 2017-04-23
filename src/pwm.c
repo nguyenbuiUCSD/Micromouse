@@ -141,13 +141,13 @@ void setLeftPwm(int32_t speed)
 
     if(speed >= 0)//forward
     {
-        L_PWM_F = speed;
-        L_PWM_R	= 0;
+        L_PWM_F = 0;
+        L_PWM_R	= speed;
     }
     else//rewind
     {
-        L_PWM_F = 0;
-        L_PWM_R	= -speed;
+        L_PWM_F = -speed;
+        L_PWM_R	= 0;
     }
 
 		CCR1_Val = L_PWM_F;
@@ -163,13 +163,13 @@ void setRightPwm(int32_t speed)
 
     if(speed >= 0)//forward
     {
-        R_PWM_F = 0;
-        R_PWM_R	= speed;
+        R_PWM_F = speed;
+        R_PWM_R	= 0;
     }
     else//rewind
     {
-        R_PWM_F = -speed;
-        R_PWM_R	= 0;
+        R_PWM_F = 0;
+        R_PWM_R	= -speed;
     }
 
 		CCR3_Val = R_PWM_F;

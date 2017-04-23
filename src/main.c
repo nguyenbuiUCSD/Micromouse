@@ -32,34 +32,37 @@ int main(void) {
 	// 3. START PROGRAM -------------------------------------------------
 	while (1){
 
-LED1_ON;
-LED5_ON;
-//readSensor();
+		LED1_ON;
+		LED5_ON;
 
-delay_ms(20);
-LED1_OFF;
-LED5_OFF;
+		Driver_go_straight(CELL_WIDTH, 30);
 
-Driver_go_straight(0, 0);
-Driver_go_straight(200, 100);
-Driver_go_straight(200, 200);
-Driver_go_straight(200, 500);
-Driver_go_straight(200, 200);
-Driver_go_straight(200, 100);
-Driver_go_straight(200, -100);
-Driver_go_straight(200, -200);
-Driver_go_straight(200, -500);
-Driver_go_straight(200, -200);
-Driver_go_straight(200, -100);
-Driver_go_straight(0, 0);
+		Controller_frontwall_corection();
 
+		Driver_turn_right(0,90,30);
+
+		Controller_frontwall_corection();
+
+		Driver_turn_right(0,90,30);
+
+		Driver_go_straight(CELL_WIDTH, 30);
+
+		Controller_frontwall_corection();
+
+		Driver_turn_left(0,90,30);
+
+		Controller_frontwall_corection();
+
+		Driver_turn_left(0,90,30);
+
+		Driver_go_straight(0, 0);
+
+		LED1_OFF;
+		LED5_OFF;
+
+		delay_ms(5000);
 
 
 	}// END MAIN LOOP -----------------------------------------------
-
-
-
-
-
 
 }

@@ -30,6 +30,7 @@ extern volatile int32_t RDSensor;
 
 
 void readSensor(void);
+void readFrontSensor(void);
 void readGyro(void);
 void readVolMeter(void);
 void lowBatCheck(void);

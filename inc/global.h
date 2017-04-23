@@ -27,7 +27,7 @@ typedef int Cell_label;
 /*
  * Driver Define
  */
-#define M_PI 31415 //x10^(-4)
+#define M_PI 31416 //x10^(-4)
 #define E_6	1000000 // 10^6
 #define E_5	100000 // 10^5
 #define E_4	10000 // 10^4
@@ -38,8 +38,8 @@ typedef int Cell_label;
 /*
  * Using the new mice
  */
-#define L_100MM2COUNT_RATIO 9000  // 100 millimeters = 1110 count
-#define R_100MM2COUNT_RATIO 9000  // 100 millimeters = 1110 count
+#define L_100MM2COUNT_RATIO 90  // 100 millimeters = 1110 count
+#define R_100MM2COUNT_RATIO 90  // 100 millimeters = 1110 count
 #define MOUSE_WIDTH 69	// 65mm from left wheels to right wheels
 
 
@@ -50,11 +50,25 @@ typedef int Cell_label;
  * #define R_100MM2COUNT_RATIO 1150  // 100 millimeters = 1110 count
  * #define MOUSE_WIDTH 83	// 65mm from left wheels to right wheels
  */
-
-
 /*
  * Controller Define
  */
+/*
+ * WALL INFO
+ * This depend on type of wall
+ */
+#define CENTER_TO_LEFT_WALL 1425
+#define CENTER_TO_RIGHT_WALL 1286
+#define CENTER_TO_FRONT_RIGHT 4529
+#define CENTER_TO_FRONT_LEFT 4193
 
+#define FRONT_LEFT_THRESHOLD 1200
+#define FRONT_RTIGHT_THREHOLD 500
+#define DIAGNAL_LEFT_THRESHOLD 250
+#define DIAGNAL_RIGHT_THRESHOLD 250
+
+#define SENSOR_RATIO 22
+#define MAX_SENSOR_ERR 35
+#define FRONT_WALL_CORRECTION_SPEED_LIMIT 20
 
 #endif /* GLOBAL_H_ */

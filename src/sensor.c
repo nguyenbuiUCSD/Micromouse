@@ -35,34 +35,29 @@ void readSensor(void)
 	FH_EM_ON;
 	elapseMicros(50,curt);
 	FLSensor = read_FL_Sensor - FLSensor;
+	FRSensor = read_FR_Sensor - FRSensor;
 	FH_EM_OFF;
 	if(FLSensor < 0)//error check
 		FLSensor = 0;
- 	elapseMicros(150,curt);
-//right front sensor
-	FH_EM_ON;
-	elapseMicros(200,curt);
-	FRSensor = read_FR_Sensor - FRSensor;
-	FH_EM_OFF;
 	if(FRSensor < 0)
 		FRSensor = 0;
- 	elapseMicros(300,curt);
+	elapseMicros(150,curt);
 // left diagonal sensors
 	LD_EM_ON;
-	elapseMicros(350,curt);
+	elapseMicros(200,curt);
 	LDSensor = read_LD_Sensor - LDSensor;
 	LD_EM_OFF;
 	if(LDSensor < 0)
 		LDSensor = 0;
-	elapseMicros(400,curt);
+	elapseMicros(300,curt);
 // right diagonal sensors
 	RD_EM_ON;
-	elapseMicros(450,curt);
+	elapseMicros(350,curt);
 	RDSensor = read_RD_Sensor - RDSensor;
 	RD_EM_OFF;
 	if(RDSensor < 0)
 		RDSensor = 0;
-	elapseMicros(500,curt);
+	elapseMicros(450,curt);
 
 	FLSensor /= 10;
 	FRSensor /= 10;
@@ -70,6 +65,31 @@ void readSensor(void)
 	RDSensor /= 10;
 }
 
+
+void readFrontSensor(void){
+	u32 curt;
+//read DC value
+
+	FLSensor = read_FL_Sensor;
+	FRSensor = read_FR_Sensor;
+
+	curt = micros();
+
+	//front sensor
+	FH_EM_ON;
+	elapseMicros(50,curt);
+	FLSensor = read_FL_Sensor - FLSensor;
+	FRSensor = read_FR_Sensor - FRSensor;
+	FH_EM_OFF;
+	if(FLSensor < 0)//error check
+		FLSensor = 0;
+	if(FRSensor < 0)
+		FRSensor = 0;
+ 	elapseMicros(150,curt);
+ 	// Update new value
+	FLSensor /= 10;
+	FRSensor /= 10;
+}
 
 
 /*read voltage meter*/
