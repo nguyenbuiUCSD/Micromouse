@@ -57,6 +57,9 @@ typedef int Cell_label;
  * WALL INFO
  * This depend on type of wall
  */
+#define FRONTWALL_BIT_POSITION 1
+#define LEFTWALL_BIT_POSITION 2
+#define RIGHTWALL_BIT_POSITION 0
 #define CENTER_TO_LEFT_WALL 1425
 #define CENTER_TO_RIGHT_WALL 1286
 #define CENTER_TO_FRONT_RIGHT 4529

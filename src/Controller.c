@@ -197,3 +197,18 @@ void Controller_frontwall_corection(){
 	Controller_run(0,0,0,0);
 }
 
+int Controller_checkwall(void)
+{
+	int returnvalue = 0;
+
+	readSensor();
+	if (FLSensor > 1200 && FRSensor > 500)
+		returnvalue |= (1 << FRONTWALL_BIT_POSITION );
+	if (LDSensor > 250)
+		returnvalue |= (1 << LEFTWALL_BIT_POSITION);
+	if (RDSensor > 250)
+		returnvalue |= (1 << RIGHTWALL_BIT_POSITION);
+
+	return returnvalue;
+
+}
