@@ -92,16 +92,11 @@ int main(void) {
 
 		Driver_go_straight(0, 0); */
 
-<<<<<<< HEAD
 		delay_ms(2000);
 
 		LED1_OFF;
 		LED5_OFF;
 
-=======
-
-
->>>>>>> acf3e6fb75d75c41d852722adc7a1416f486f986
 
 	}// END MAIN LOOP -----------------------------------------------
 
