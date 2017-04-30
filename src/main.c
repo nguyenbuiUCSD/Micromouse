@@ -32,10 +32,43 @@ int main(void) {
 	// 3. START PROGRAM -------------------------------------------------
 	while (1){
 
+		int testvalue = Controller_checkwall();
+
+		if (testvalue & (1 << FRONTWALL_BIT_POSITION))
+		{
 		LED1_ON;
-		LED5_ON;
+		}
 
-		Driver_go_straight(CELL_WIDTH, 30);
+		else
+		{
+		LED1_OFF;
+		delay_ms(1000);
+		}
+
+		if (testvalue & (1 << LEFTWALL_BIT_POSITION))
+				{
+				LED5_ON;
+				}
+
+				else
+				{
+				LED5_OFF;
+				}
+
+		if (testvalue & (1 << RIGHTWALL_BIT_POSITION))
+				{
+				LED2_ON;
+
+				}
+
+				else
+				{
+				LED2_OFF;
+				}
+
+
+
+	/*	Driver_go_straight(CELL_WIDTH, 30);
 
 		Controller_frontwall_corection();
 
@@ -57,13 +90,18 @@ int main(void) {
 
 		Driver_turn_left(0,90,15);
 
-		Driver_go_straight(0, 0);
+		Driver_go_straight(0, 0); */
 
+<<<<<<< HEAD
 		delay_ms(2000);
 
 		LED1_OFF;
 		LED5_OFF;
 
+=======
+
+
+>>>>>>> acf3e6fb75d75c41d852722adc7a1416f486f986
 
 	}// END MAIN LOOP -----------------------------------------------
 

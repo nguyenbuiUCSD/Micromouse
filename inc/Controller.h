@@ -18,4 +18,5 @@
 void Controller_hardware_init(void );
 void Controller_run(int left_distance, int right_distance, int left_speed, int right_speed);
 void Controller_frontwall_corection(void );
+int Controller_checkwall(void);
 #endif /* CONTROLLER_H_ */
