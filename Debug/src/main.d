@@ -3,6 +3,7 @@ src/main.o: ../src/main.c \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/Controller.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/Driver.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/Controller.h \
+ /Users/nguyenbui/Documents/workspace/Micromouse/inc/Runner.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/device/stm32f4xx.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/core/core_cm4.h \
@@ -48,6 +49,8 @@ src/main.o: ../src/main.c \
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/Driver.h:
 
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/Controller.h:
+
+/Users/nguyenbui/Documents/workspace/Micromouse/inc/Runner.h:
 
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/delay.h:
 

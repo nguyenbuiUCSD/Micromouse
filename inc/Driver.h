@@ -16,4 +16,6 @@ void Driver_turn_right(int distance, int angle, int speed);
 
 void Driver_go_straight(int distance, int speed);
 
+int Driver_checkwalls(void);
+
 #endif /* DRIVER_H_ */

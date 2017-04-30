@@ -7,6 +7,9 @@
 
 #include "Controller.h"
 #include "global.h"
+#define LEFT_TURN_OFFSET 60
+#define RIGHT_TURN_OFFSET 0
+
 
 int left_cnt, right_cnt;
 int left_spd, right_spd;
@@ -33,8 +36,8 @@ void Driver_turn_left(int distance, int angle, int speed){
 	}
 
 	// Calculate left distance and right distance in counts
-	left_cnt = (radius*2 - MOUSE_WIDTH)*M_PI/E_4*L_100MM2COUNT_RATIO*angle/360; // E_4+E_2 = E_6
-	right_cnt = (radius*2 + MOUSE_WIDTH)*M_PI/E_4*R_100MM2COUNT_RATIO*angle/360; // E_4+E_2 = E_6
+	left_cnt = (radius*2 - MOUSE_WIDTH)*M_PI/E_4*L_100MM2COUNT_RATIO*angle/360 + LEFT_TURN_OFFSET; // E_4+E_2 = E_6
+	right_cnt = (radius*2 + MOUSE_WIDTH)*M_PI/E_4*R_100MM2COUNT_RATIO*angle/360 + LEFT_TURN_OFFSET; // E_4+E_2 = E_6
 
 	// Make sure that left and right distance (coutns)is always POSITIVE
 	if (left_cnt < 0) left_cnt = -left_cnt;
@@ -51,9 +54,6 @@ void Driver_turn_left(int distance, int angle, int speed){
 
 	// Cal propriate Controller method
 	Controller_run(left_cnt, right_cnt, left_spd, right_spd);
-
-	// Go straingt before return
-	Controller_run(0, 0, speed, speed);
 
 }
 
@@ -79,8 +79,8 @@ void Driver_turn_right(int distance, int angle, int speed) {
 
 
 
-	left_cnt = (radius*2 + MOUSE_WIDTH)*M_PI/E_4*L_100MM2COUNT_RATIO*angle/360; // E_4+E_2 = E_6
-	right_cnt = (radius*2 - MOUSE_WIDTH)*M_PI/E_4*R_100MM2COUNT_RATIO*angle/360; // E_4+E_2 = E_6
+	left_cnt = (radius*2 + MOUSE_WIDTH)*M_PI/E_4*L_100MM2COUNT_RATIO*angle/360 + RIGHT_TURN_OFFSET; // E_4+E_2 = E_6
+	right_cnt = (radius*2 - MOUSE_WIDTH)*M_PI/E_4*R_100MM2COUNT_RATIO*angle/360 + RIGHT_TURN_OFFSET; // E_4+E_2 = E_6
 
 	// Make sure that left and right distance (coutns)is always POSITIVE
 	if (left_cnt < 0) left_cnt = -left_cnt;
@@ -98,14 +98,14 @@ void Driver_turn_right(int distance, int angle, int speed) {
 	// COntroller
 	Controller_run(left_cnt, right_cnt, left_spd, right_spd);
 
-
-	// Go straingt before return
-	Controller_run(0, 0, speed, speed);
-
 }
 
 
 /* return whether successful or not */
 void Driver_go_straight(int distance, int speed) {
 	Controller_run(distance*L_100MM2COUNT_RATIO, distance*R_100MM2COUNT_RATIO, speed, speed);
+}
+
+int Driver_checkwalls(){
+	return Controller_checkwall();
 }

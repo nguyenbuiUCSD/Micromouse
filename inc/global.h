@@ -40,7 +40,7 @@ typedef int Cell_label;
  */
 #define L_100MM2COUNT_RATIO 90  // 100 millimeters = 1110 count
 #define R_100MM2COUNT_RATIO 90  // 100 millimeters = 1110 count
-#define MOUSE_WIDTH 69	// 65mm from left wheels to right wheels
+#define MOUSE_WIDTH 67	// 65mm from left wheels to right wheels
 
 
 
@@ -57,6 +57,9 @@ typedef int Cell_label;
  * WALL INFO
  * This depend on type of wall
  */
+#define FRONTWALL_BIT_POSITION 1
+#define LEFTWALL_BIT_POSITION 2
+#define RIGHTWALL_BIT_POSITION 0
 #define CENTER_TO_LEFT_WALL 1425
 #define CENTER_TO_RIGHT_WALL 1286
 #define CENTER_TO_FRONT_RIGHT 4529
@@ -70,6 +73,6 @@ typedef int Cell_label;
 #define SENSOR_RATIO 22
 #define MAX_SENSOR_ERR 35
 #define FRONT_WALL_CORRECTION_SPEED_LIMIT 10
-#define FRONT_WALL_CORRECTION_SENSOR_RATIO 5
+#define FRONT_WALL_SENSOR_RATIO 5
 
 #endif /* GLOBAL_H_ */

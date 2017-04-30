@@ -32,6 +32,8 @@ void Controller_hardware_init(void) {
 	Encoder_Configration();
 
 	ADC_Config();
+
+	delay_ms(5000);
 }
 
 /*
@@ -70,16 +72,6 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 
 		return;
 	}
-
-
-
-	// Free run, no pid
-	if ((left_distance == 0)&&(right_distance == 0)) {
-		setLeftPwm(left_speed);
-		setRightPwm(right_speed);
-		return;
-	}
-
 
 	// Save the value in the Encoder counter reg
 	left_EN = getLeftDistance();
@@ -169,10 +161,10 @@ void Controller_frontwall_corection(){
 
 	// Reset PID
 	pid_reset();
-	while((Millis - current_time) < 800){
+	while((Millis - current_time) < 500){
 		readFrontSensor();
-		front_left = (CENTER_TO_FRONT_LEFT - FLSensor)/SENSOR_RATIO;
-		front_right = (CENTER_TO_FRONT_RIGHT - FRSensor)/SENSOR_RATIO;
+		front_left = (CENTER_TO_FRONT_LEFT - FLSensor)/FRONT_WALL_SENSOR_RATIO;
+		front_right = (CENTER_TO_FRONT_RIGHT - FRSensor)/FRONT_WALL_SENSOR_RATIO;
 
 		if (front_left > FRONT_WALL_CORRECTION_SPEED_LIMIT)
 			front_left = FRONT_WALL_CORRECTION_SPEED_LIMIT;
@@ -184,9 +176,9 @@ void Controller_frontwall_corection(){
 			front_right = -FRONT_WALL_CORRECTION_SPEED_LIMIT;
 
 		// Left motor error to PID
-		front_left = sensor_pid_left_motor(front_left);
+		front_left = sensor_pid_left_motor(front_left - global_left_speed);
 		// Right motor error to PID
-		front_right = sensor_pid_right_motor(front_right);
+		front_right = sensor_pid_right_motor(front_right - global_right_speed);
 
 		// Set pwm
 		setLeftPwm(front_left);
@@ -197,3 +189,18 @@ void Controller_frontwall_corection(){
 	Controller_run(0,0,0,0);
 }
 
+int Controller_checkwall(void)
+{
+	int returnvalue = 0;
+
+	readSensor();
+	if (FLSensor > 1200 && FRSensor > 500)
+		returnvalue |= (1 << FRONTWALL_BIT_POSITION );
+	if (LDSensor > 250)
+		returnvalue |= (1 << LEFTWALL_BIT_POSITION);
+	if (RDSensor > 250)
+		returnvalue |= (1 << RIGHTWALL_BIT_POSITION);
+
+	return returnvalue;
+
+}
