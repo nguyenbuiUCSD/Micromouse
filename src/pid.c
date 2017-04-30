@@ -22,11 +22,11 @@
 #define RKD 28
 
 
-#define SS_LKP 3500
-#define SS_LKI 2
+#define SS_LKP 15000
+#define SS_LKI 160
 #define SS_LKD 80
-#define SS_RKP 3500
-#define SS_RKI 2
+#define SS_RKP 15000
+#define SS_RKI 160
 #define SS_RKD 80
 
 

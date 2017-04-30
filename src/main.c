@@ -39,28 +39,30 @@ int main(void) {
 
 		Controller_frontwall_corection();
 
-		Driver_turn_right(0,90,30);
+		Driver_turn_right(0,90,15);
 
 		Controller_frontwall_corection();
 
-		Driver_turn_right(0,90,30);
+		Driver_turn_right(0,90,15);
+
+		Driver_go_straight(0, 0);
 
 		Driver_go_straight(CELL_WIDTH, 30);
 
 		Controller_frontwall_corection();
 
-		Driver_turn_left(0,90,30);
+		Driver_turn_left(0,90,15);
 
 		Controller_frontwall_corection();
 
-		Driver_turn_left(0,90,30);
+		Driver_turn_left(0,90,15);
 
 		Driver_go_straight(0, 0);
 
+		delay_ms(2000);
+
 		LED1_OFF;
 		LED5_OFF;
-
-		delay_ms(5000);
 
 
 	}// END MAIN LOOP -----------------------------------------------
