@@ -78,7 +78,22 @@ typedef int Cell_label;
 #define FRONT_WALL_CORRECTION_SPEED_LIMIT 10
 #define FRONT_WALL_SENSOR_RATIO 5
 
+/*
+ * DIRECTIONS
+ * This depends on which way the mouse is facing
+ */
+#define NORTH 0
+#define EAST 1
+#define SOUTH 2
+#define WEST 3
 
-
+/*
+ * TURNS
+ * This depends on which way the mouse is turning
+ */
+#define STRAIGHT 0
+#define RIGHT 1
+#define UTURN 2
+#define LEFT 3
 
 #endif /* GLOBAL_H_ */

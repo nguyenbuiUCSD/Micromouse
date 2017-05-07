@@ -15,7 +15,7 @@ startup/%.o: ../startup/%.s
 	@echo 'Building file: $<'
 	@echo 'Invoking: MCU GCC Assembler'
 	@echo $(PWD)
-	arm-none-eabi-as -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -I"/Users/nguyenbui/Documents/workspace/Micromouse/inc" -I"/Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/core" -I"/Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/device" -I"/Users/nguyenbui/Documents/workspace/Micromouse/StdPeriph_Driver/inc" -g -o "$@" "$<"
+	arm-none-eabi-as -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -I"/Users/achintsingh/Downloads/Micromouse/inc" -I"/Users/achintsingh/Downloads/Micromouse/CMSIS/core" -I"/Users/achintsingh/Downloads/Micromouse/CMSIS/device" -I"/Users/achintsingh/Downloads/Micromouse/StdPeriph_Driver/inc" -g -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

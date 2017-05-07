@@ -37,6 +37,7 @@ int main(void) {
  * Test Random turn search -------------------
  */
 		Runner_random_turn();
+		delay_ms(10000);
 
 /*
  * Calibrate wall sensor ---------------------
