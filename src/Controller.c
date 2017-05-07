@@ -44,7 +44,7 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 	// Declaration of all variables
 	volatile int left_EN; // left encoder count
 	volatile int right_EN; // right encoder count
-	volatile int pid_err, temp;
+	volatile int pid_err, temp=0;
 	volatile int lpwm, rpwm;
 
 	volatile int wall_err = 0;
@@ -86,30 +86,16 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 					(abs(getRightDistance() - right_EN) < (right_distance))){
 
 
-/*
 		// Correct position base on wall sensor infomation
 		// Only corret when going straight
 		if (left_speed == right_speed){
-
 			// read infomation
-			readSensor();
-			// CASE 1: correct position base on both wall
-			// For reliable sensor to correct position. we need to read the cloe value only
-			if ((LDSensor > (CENTER_TO_LEFT_WALL-50))&&
-				(RDSensor > (CENTER_TO_RIGHT_WALL-50))){
-				if (temp >200){
-					wall_err = (LDSensor - RDSensor - (CENTER_TO_LEFT_WALL - CENTER_TO_RIGHT_WALL))
-								/SENSOR_RATIO;
-					// Check if error is valid for correction ( too far from wall)
-					if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
-					if (wall_err < -(MAX_SENSOR_ERR)) wall_err = -(MAX_SENSOR_ERR);
-				} else {
-					temp ++;
-				}
+			read_side_sensors();
+
 
 			// CASE 2: have left wall
-			} else	if (LDSensor > (CENTER_TO_LEFT_WALL-50)){
-				if (temp > 200){
+			if (LDSensor > (CENTER_TO_LEFT_WALL+300)){
+				if (temp > 300){
 					wall_err = (LDSensor - CENTER_TO_LEFT_WALL)/SENSOR_RATIO;
 					// Check if error is valid for correction ( too far from wall)
 					if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
@@ -117,12 +103,12 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 				} else {
 					temp ++;
 				}
+			}
 
-
-				// Case 3: Use right wall for correction
-			} else if (RDSensor > (CENTER_TO_RIGHT_WALL-50)){
-				if (temp >200){
-					wall_err = (RDSensor - CENTER_TO_RIGHT_WALL)/22;
+			// Case 3: Use right wall for correction
+			else if (RDSensor > (CENTER_TO_RIGHT_WALL+300)){
+				if (temp >300){
+					wall_err = -(RDSensor - CENTER_TO_RIGHT_WALL)/SENSOR_RATIO;
 					if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
 					if (wall_err < -(MAX_SENSOR_ERR)) wall_err = -(MAX_SENSOR_ERR);
 				} else {
@@ -134,17 +120,18 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 				wall_err = 0;
 			}
 		}
+		else {
+			wall_err = 0;
+		}
 
-
-*/
 
 		// Left motor error to PID
 		pid_err = left_speed - global_left_speed + wall_err;
-		lpwm = pid_left_motor(pid_err);
+		lpwm = sensor_pid_left_motor(pid_err);
 
 		// Right motor error to PID
-		pid_err = right_speed - global_right_speed;
-		rpwm = pid_right_motor(pid_err);
+		pid_err = right_speed - global_right_speed - wall_err;
+		rpwm = sensor_pid_right_motor(pid_err);
 
 		// Set pwm
 		setLeftPwm(lpwm);
@@ -194,11 +181,11 @@ int Controller_checkwall(void)
 	int returnvalue = 0;
 
 	readSensor();
-	if (FLSensor > 1200 && FRSensor > 500)
+	if (FLSensor > FRONT_LEFT_THRESHOLD && FRSensor > FRONT_RIGHT_THRESHOLD)
 		returnvalue |= (1 << FRONTWALL_BIT_POSITION );
-	if (LDSensor > 250)
+	if (LDSensor > DIAGNAL_LEFT_THRESHOLD)
 		returnvalue |= (1 << LEFTWALL_BIT_POSITION);
-	if (RDSensor > 250)
+	if (RDSensor > DIAGNAL_RIGHT_THRESHOLD)
 		returnvalue |= (1 << RIGHTWALL_BIT_POSITION);
 
 	return returnvalue;

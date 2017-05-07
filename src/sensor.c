@@ -19,7 +19,7 @@ volatile int32_t LDSensor = 0;
 volatile int32_t RDSensor = 0;
 
 /*read IR sensors*/
-void readSensor(void)
+void readSensor()
 {
 	u32 curt;
 //read DC value
@@ -66,7 +66,7 @@ void readSensor(void)
 }
 
 
-void readFrontSensor(void){
+void readFrontSensor(){
 	u32 curt;
 //read DC value
 
@@ -92,15 +92,48 @@ void readFrontSensor(void){
 }
 
 
+/*read IR sensors*/
+void read_side_sensors()
+{
+	u32 curt;
+//read DC value
+
+	LDSensor = read_LD_Sensor;
+	RDSensor = read_RD_Sensor;
+
+	curt = micros();
+
+// left diagonal sensors
+	LD_EM_ON;
+	elapseMicros(50,curt);
+	LDSensor = read_LD_Sensor - LDSensor;
+	LD_EM_OFF;
+	if(LDSensor < 0)
+		LDSensor = 0;
+	elapseMicros(100,curt);
+// right diagonal sensors
+	RD_EM_ON;
+	elapseMicros(160,curt);
+	RDSensor = read_RD_Sensor - RDSensor;
+	RD_EM_OFF;
+	if(RDSensor < 0)
+		RDSensor = 0;
+	elapseMicros(200,curt);
+
+	LDSensor /= 10;
+	RDSensor /= 10;
+}
+
+
 /*read voltage meter*/
-void readVolMeter(void)
+void readVolMeter()
 {          //3240 = 7.85V
 	volMeter = read_Vol_Meter;//raw value
 	voltage = volMeter*809/3248;//actual voltage value  ex) 8.2V = 8200
 }
 
 
-void lowBatCheck(void)
+void lowBatCheck()
 {
 }
 

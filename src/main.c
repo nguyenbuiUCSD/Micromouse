@@ -34,10 +34,19 @@ int main(void) {
 	while (1){
 
 /*
- * Test Random turn search
+ * Test Random turn search -------------------
  */
 		Runner_random_turn();
 
+/*
+ * Calibrate wall sensor ---------------------
+ */
+//		LED1_ON;
+//		LED5_ON;
+//		int testvalue = Controller_checkwall();
+//		delay_ms(500);
+//		LED1_OFF;
+//		LED5_OFF;
 
 /*
 		int testvalue = Controller_checkwall();
@@ -130,13 +139,13 @@ int main(void) {
 
 		Driver_turn_left(0,90,15);
 
-		Driver_go_straight(0, 0); */
+		Driver_go_straight(0, 0);
 
-		delay_ms(5000);
+		delay_ms(3000);
 
 		LED1_OFF;
 		LED5_OFF;
-
+*/
 
 	}// END MAIN LOOP -----------------------------------------------
 
