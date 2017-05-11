@@ -216,10 +216,53 @@ void Runner_random_turn_two() {
 	int random_num;
 
 	Driver_go_straight(HALF_CELL_WIDTH, RANDOM_TURN_SPEED);
+	Driver_go_straight(0, 0);
+
 	y_coord++;
 
 	while (1){
 		int walls_info = Driver_checkwalls();
+
+
+		// Update wall info
+		//define walls to be SWEN (last 4 positions)
+		int n, e, s, w;
+		switch(curr_dir){
+		case NORTH:
+			n = (walls_info >> FRONTWALL_BIT_POSITION) & 1;
+			e = (walls_info >> RIGHTWALL_BIT_POSITION)  & 1;
+			w = (walls_info >> LEFTWALL_BIT_POSITION) & 1;
+			s = 0;
+			break;
+		case EAST:
+			e = (walls_info >> FRONTWALL_BIT_POSITION) & 1;
+			s = (walls_info >> RIGHTWALL_BIT_POSITION)  & 1;
+			n = (walls_info >> LEFTWALL_BIT_POSITION) & 1;
+			w = 0;
+			break;
+		case SOUTH:
+			s = (walls_info >> FRONTWALL_BIT_POSITION) & 1;
+			w = (walls_info >> RIGHTWALL_BIT_POSITION)  & 1;
+			e = (walls_info >> LEFTWALL_BIT_POSITION) & 1;
+			n = 0;
+			break;
+		case WEST:
+			w = (walls_info >> FRONTWALL_BIT_POSITION) & 1;
+			n = (walls_info >> RIGHTWALL_BIT_POSITION)  & 1;
+			s = (walls_info >> LEFTWALL_BIT_POSITION) & 1;
+			e = 0;
+			break;
+		}
+		int curr = 0;
+		curr = curr | (n << NORTH);
+		curr = curr | (e << EAST);
+		curr = curr | (s << SOUTH);
+		curr = curr | (w << WEST);
+		maze[y_coord][x_coord]&= 0xFFFFFFF0;
+		maze[y_coord][x_coord]|= curr;
+
+
+		// Make the turn
 
 		random_num = Micros % 3;
 
@@ -397,37 +440,7 @@ void Runner_random_turn_two() {
 			return;
 		}
 
-		//ok we will update the walls here
 
-		//define walls to be SWEN (last 4 positions)
-		int n, e, s, w;
-		switch(curr_dir){
-		case NORTH:
-			n = walls_info & (1 << FRONTWALL_BIT_POSITION);
-			e = walls_info & (1 << RIGHTWALL_BIT_POSITION);
-			w = walls_info & (1 << LEFTWALL_BIT_POSITION);
-			s = 0;
-		case EAST:
-			e = walls_info & (1 << FRONTWALL_BIT_POSITION);
-			s = walls_info & (1 << RIGHTWALL_BIT_POSITION);
-			n = walls_info & (1 << LEFTWALL_BIT_POSITION);
-			w = 0;
-		case SOUTH:
-			s = walls_info & (1 << FRONTWALL_BIT_POSITION);
-			w = walls_info & (1 << RIGHTWALL_BIT_POSITION);
-			e = walls_info & (1 << LEFTWALL_BIT_POSITION);
-			n = 0;
-		case WEST:
-			w = walls_info & (1 << FRONTWALL_BIT_POSITION);
-			n = walls_info & (1 << RIGHTWALL_BIT_POSITION);
-			s = walls_info & (1 << LEFTWALL_BIT_POSITION);
-			e = 0;
-		}
-		int curr = 0;
-		curr = curr | (n << NORTH);
-		curr = curr | (e << EAST);
-		curr = curr | (s << SOUTH);
-		curr = curr | (w << WEST);
-		maze[y_coord][x_coord] = curr;
+
 	}
 }
