@@ -31,10 +31,10 @@ endif
 all: Micromouse.elf
 
 # Tool invocations
-Micromouse.elf: $(OBJS) $(USER_OBJS) /Users/achintsingh/Downloads/Micromouse/LinkerScript.ld
+Micromouse.elf: $(OBJS) $(USER_OBJS) /Users/andy/git/Micromouse/LinkerScript.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: MCU GCC Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -T"/Users/achintsingh/Downloads/Micromouse/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -lm -o "Micromouse.elf" @"objects.list" $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -T"/Users/andy/git/Micromouse/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -lm -o "Micromouse.elf" @"objects.list" $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 	$(MAKE) --no-print-directory post-build

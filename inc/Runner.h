@@ -9,5 +9,5 @@
 #define RUNNER_H_
 
 void Runner_random_turn(void);
-
+void Runner_random_turn_two(void);
 #endif /* RUNNER_H_ */
