@@ -10,4 +10,6 @@
 
 void Runner_random_turn(void);
 void Runner_random_turn_two(void);
+void Runner_explore(int x_target, int y_target);
+
 #endif /* RUNNER_H_ */

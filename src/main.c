@@ -36,7 +36,7 @@ int main(void) {
 /*
  * Test Random turn search -------------------
  */
-		Runner_random_turn_two();
+		Runner_explore(2,2);
 		delay_ms(10000);
 
 /*

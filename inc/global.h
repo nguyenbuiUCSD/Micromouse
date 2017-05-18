@@ -20,6 +20,13 @@ typedef int Cell_label;
 
 
 /*
+ * Bit manipulation macro
+ */
+#define CLR_B(p,n) ((p) &= ~((1) << (n)))
+#define SET_B(p,n) ((p) |= ((1) << (n)))
+#define READ_B(p,n) ((p) & ((1) << (n)))
+
+/*
  * Runner Define
  */
 #define ROW_DEST 7
@@ -36,14 +43,14 @@ typedef int Cell_label;
 #define E_3	1000 // 10^3
 #define E_2	100 // 10^2
 #define CELL_WIDTH 180
-#define HALF_CELL_WIDTH 90
+#define HALF_CELL_WIDTH 80
 
 /*
  * Using the new mice
  */
-#define L_100MM2COUNT_RATIO 88  // 100 millimeters = 1110 count
-#define R_100MM2COUNT_RATIO 88  // 100 millimeters = 1110 count
-#define MOUSE_WIDTH 67	// 65mm from left wheels to right wheels
+#define L_100MM2COUNT_RATIO 88  //old 88 - 100 millimeters = 1110 count
+#define R_100MM2COUNT_RATIO 88  //old 88 - 100 millimeters = 1110 count
+#define MOUSE_WIDTH 69	// 69mm from left wheels to right wheels
 
 
 
@@ -60,6 +67,7 @@ typedef int Cell_label;
  * WALL INFO
  * This depend on type of wall
  */
+#define VISITED_BIT_POSITION 4
 #define FRONTWALL_BIT_POSITION 0
 #define LEFTWALL_BIT_POSITION 3
 #define RIGHTWALL_BIT_POSITION 1
@@ -86,6 +94,7 @@ typedef int Cell_label;
 #define EAST 1
 #define SOUTH 2
 #define WEST 3
+#define UNKNOWN_DIRECTION 5
 
 /*
  * TURNS
