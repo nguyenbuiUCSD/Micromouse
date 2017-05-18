@@ -19,7 +19,10 @@ int static curr_dir = NORTH;
 int static turn = STRAIGHT;
 int maze[16][16];
 int maze_flood_fill[16][16];
+STACK s = { .stack = {{0}}, .top = 0 };
 
+
+/* Initialize the maze with distances from target */
 void Runner_maze_init(int x_target, int y_target){
 	for (int x = 0; x< 16; x++){
 		for (int y = 0; y< 16; y++){
@@ -29,41 +32,123 @@ void Runner_maze_init(int x_target, int y_target){
 	}
 }
 
+/* Update the the distances of the maze with new wall info */
 void Runner_flood_fill(){
 	for (int i = 0; i<256; i++)
 		for (int x = 0; x< 16; x++)
 			for (int y = 0; y< 16; y++){
 				if ( maze[x][y]&(1<<VISITED_BIT_POSITION) ){
-					int smalest_neighbor = 256;
+					int smallest_neighbor = 256;
 					if (!(maze[x][y] & (1 << NORTH))) {
-						if (smalest_neighbor > maze_flood_fill[x][y+1]){
-							smalest_neighbor = maze_flood_fill[x][y+1];
+						if (smallest_neighbor > maze_flood_fill[x][y+1]){
+							smallest_neighbor = maze_flood_fill[x][y+1];
 						}
 					}
 
 					if (!(maze[x][y] & (1 << EAST))) {
-						if (smalest_neighbor > maze_flood_fill[x+1][y]){
-								smalest_neighbor = maze_flood_fill[x+1][y];
+						if (smallest_neighbor > maze_flood_fill[x+1][y]){
+								smallest_neighbor = maze_flood_fill[x+1][y];
 						}
 					}
 
 					if (!(maze[x][y] & (1 << SOUTH))) {
-						if (smalest_neighbor > maze_flood_fill[x][y-1]){
-							smalest_neighbor = maze_flood_fill[x][y-1];
+						if (smallest_neighbor > maze_flood_fill[x][y-1]){
+							smallest_neighbor = maze_flood_fill[x][y-1];
 						}
 					}
 
 					if (!(maze[x][y] & (1 << WEST))) {
-						if (smalest_neighbor > maze_flood_fill[x-1][y]){
-							smalest_neighbor = maze_flood_fill[x-1][y];
+						if (smallest_neighbor > maze_flood_fill[x-1][y]){
+							smallest_neighbor = maze_flood_fill[x-1][y];
 						}
 					}
 
-					if (smalest_neighbor < 256){
-						maze_flood_fill[x][y] = smalest_neighbor + 1;
+					if (smallest_neighbor < 256){
+						maze_flood_fill[x][y] = smallest_neighbor + 1;
 					}
 
 				}
+	}
+}
+
+/* Update distances according to new wall info found at x and y */
+void Runner_update_distances(int x, int y) {
+
+	// Make sure stack is empty
+	s = { .stack = {{0}}, .top = 0 };
+
+	// Push current cell into stack
+	COORD curr = {.row = x, .col = y };
+	push(&s, curr);
+
+
+	// Push cells adjacent to walls onto stack
+	if ((maze[x][y] & (1 << NORTH))) {
+		COORD n = {.row = x, .col = y + 1 };
+		push(&s, n);
+	}
+
+	if (!(maze[x][y] & (1 << EAST))) {
+		COORD n = {.row = x + 1, .col = y };
+		push(&s, n);
+	}
+
+	if (!(maze[x][y] & (1 << SOUTH))) {
+		COORD n = {.row = x, .col = y - 1 };
+		push(&s, n);
+	}
+
+	if (!(maze[x][y] & (1 << WEST))) {
+		COORD n = {.row = x - 1, .col = y };
+		push(&s, n);
+	}
+
+	// Update all cells in stack
+	while(!isEmpty(&s)) {
+
+		// Get cell from stack
+		COORD curr = pop(&s);
+
+		// Find smallest neighbor of current cell
+		int smallest_neighbor = 256;
+		int curr_x = curr.row;
+		int curr_y = curr.col;
+		int distN = (maze[curr_x][curr_y] & (1 << NORTH)) ? 256: maze_flood_fill[curr_x][curr_y + 1];
+		int distE = (maze[curr_x][curr_y] & (1 << EAST)) ? 256: maze_flood_fill[curr_x + 1][curr_y];
+		int distS = (maze[curr_x][curr_y] & (1 << SOUTH)) ? 256: maze_flood_fill[curr_x][curr_y - 1];
+		int distW = (maze[curr_x][curr_y] & (1 << WEST)) ? 256: maze_flood_fill[curr_x - 1][curr_y];
+
+		int min = distN;
+		min = (distE < min) ? distE : min;
+		min = (distS < min) ? distS : min;
+		min = (distW < min) ? distW : min;
+
+		// Don't need to update adjacent cells if curr cell = 1 + min neighbor
+		if (maze_flood_fill[curr_x][curr_y] == min + 1) {
+			continue;
+		}
+
+		// Other push open neighbors to stack
+		if ((maze[curr_x][curr_y] & (1 << NORTH))) {
+			COORD n = {.row = curr_x, .col = curr_y + 1 };
+			push(&s, n);
+		}
+
+		if (!(maze[curr_x][curr_y] & (1 << EAST))) {
+			COORD n = {.row = curr_x + 1, .col = curr_y };
+			push(&s, n);
+		}
+
+		if (!(maze[curr_x][curr_y] & (1 << SOUTH))) {
+			COORD n = {.row = curr_x, .col = curr_y - 1 };
+			push(&s, n);
+		}
+
+		if (!(maze[curr_x][curr_y] & (1 << WEST))) {
+			COORD n = {.row = curr_x - 1, .col = curr_y };
+			push(&s, n);
+		}
+
 	}
 }
 
@@ -564,6 +649,9 @@ void Runner_explore(int x_target, int y_target) {
 		 * Check distance of open neighbors
 		 */
 		cur_dst = maze_flood_fill[x_coord][y_coord];
+
+		/* Run either update distances of flood_fill */
+		Runner_update_distances(x_coord, y_coord, curr);
 
 		/*
 		 * Flood fill
