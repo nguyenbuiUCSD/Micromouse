@@ -105,4 +105,21 @@ typedef int Cell_label;
 #define UTURN 2
 #define LEFT 3
 
+struct Coord {
+	unsigned char row;
+	unsigned char col;
+};
+typedef struct Coord COORD;
+
+/* Stack */
+#define STACKSIZE 512
+struct Stack {
+	struct Coord stack[STACKSIZE];
+	int top = -1;
+};
+typedef struct Stack STACK;
+
+
+
+
 #endif /* GLOBAL_H_ */
