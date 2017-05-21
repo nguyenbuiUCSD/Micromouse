@@ -33,6 +33,7 @@ typedef int Cell_label;
 #define COLUMN_DEST 7
 
 
+
 /*
  * Driver Define
  */
@@ -43,14 +44,15 @@ typedef int Cell_label;
 #define E_3	1000 // 10^3
 #define E_2	100 // 10^2
 #define CELL_WIDTH 180
-#define HALF_CELL_WIDTH 80
+#define HALF_CELL_WIDTH 90
+#define HALF_CELL_WIDTH_WITH_ERR 60
 
 /*
  * Using the new mice
  */
-#define L_100MM2COUNT_RATIO 88  //old 88 - 100 millimeters = 1110 count
-#define R_100MM2COUNT_RATIO 88  //old 88 - 100 millimeters = 1110 count
-#define MOUSE_WIDTH 69	// 69mm from left wheels to right wheels
+#define L_100MM2COUNT_RATIO 88  // calibrated on 05/19
+#define R_100MM2COUNT_RATIO 88  //calibrated on 05/19
+#define MOUSE_WIDTH 68	// calibrated on 05/19
 
 
 
@@ -71,15 +73,15 @@ typedef int Cell_label;
 #define FRONTWALL_BIT_POSITION 0
 #define LEFTWALL_BIT_POSITION 3
 #define RIGHTWALL_BIT_POSITION 1
-#define CENTER_TO_LEFT_WALL 1268
-#define CENTER_TO_RIGHT_WALL 1283
-#define CENTER_TO_FRONT_RIGHT 4219
-#define CENTER_TO_FRONT_LEFT 3112
+#define CENTER_TO_LEFT_WALL 1048
+#define CENTER_TO_RIGHT_WALL 867
+#define CENTER_TO_FRONT_RIGHT 3624
+#define CENTER_TO_FRONT_LEFT 2388
 
-#define FRONT_LEFT_THRESHOLD 300
-#define FRONT_RIGHT_THRESHOLD 300
-#define DIAGNAL_LEFT_THRESHOLD 200
-#define DIAGNAL_RIGHT_THRESHOLD 200
+#define FRONT_LEFT_THRESHOLD 250
+#define FRONT_RIGHT_THRESHOLD 250
+#define DIAGNAL_LEFT_THRESHOLD 150
+#define DIAGNAL_RIGHT_THRESHOLD 150
 
 #define SENSOR_RATIO 25
 #define MAX_SENSOR_ERR 5
@@ -104,5 +106,52 @@ typedef int Cell_label;
 #define RIGHT 1
 #define UTURN 2
 #define LEFT 3
+
+#define EXPLORE_RUNNING_SPEED 20
+#define EXPLORE_TURNING_SPEED 15
+
+#define CURVE_TURN_DIA	90
+
+#define EXPLORE_RIGHT_TURN_ANGLE 90
+#define EXPLORE_LEFT_TURN_ANGLE 90
+
+/*
+ * UI mode
+ *
+ */
+#define MODE_DEFAULT 0
+#define MODE_TEST_GO_STRAIGHT 1
+#define MODE_TEST_SHARP_TURN 2
+#define MODE_TEST_CURVE_TURN 3
+#define MODE_EXPLORE 4
+#define MODE_TEST_SENSORS 5
+#define MODE_TEST_FLASH 6
+
+
+
+/*
+ * WRITE DATA ONTO FLASH
+ *
+ */
+#define MAZE_SIZE 16
+#define MAZE_ADRESS 0x080C0000
+
+
+
+/*
+ * Extern Global variables
+ */
+volatile extern int mode;
+volatile extern int FUNC_TERMINATED;
+extern int x_coord;
+extern int y_coord;
+extern int curr_dir;
+extern int turn;
+extern int maze[16][16];
+extern int maze_flood_fill[16][16];
+
+
+
+
 
 #endif /* GLOBAL_H_ */

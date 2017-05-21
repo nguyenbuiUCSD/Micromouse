@@ -7,8 +7,8 @@
 
 #include "Controller.h"
 #include "global.h"
-#define LEFT_TURN_OFFSET 60
-#define RIGHT_TURN_OFFSET 0
+#define LEFT_TURN_OFFSET 120 // calibrated on 05/19
+#define RIGHT_TURN_OFFSET 130 // calibrated on 05/19
 
 
 int left_cnt, right_cnt;
@@ -20,6 +20,14 @@ void Driver_turn_left(int distance, int angle, int speed){
 	int left_cnt, right_cnt;
 	int left_spd, right_spd;
 	int radius = distance;
+
+
+
+	/* Check if user require to terminate current function */
+	if (FUNC_TERMINATED){
+		return;
+	}
+
 
 	// Rotate at the same position
 	if (distance < 0){
@@ -63,6 +71,11 @@ void Driver_turn_right(int distance, int angle, int speed) {
 	int left_spd, right_spd;
 	int radius = distance;
 
+	/* Check if user require to terminate current function */
+	if (FUNC_TERMINATED){
+		return;
+	}
+
 	// Rotate at the same position
 	if (distance < 0){
 		Controller_run(0,0,0,0);
@@ -103,6 +116,11 @@ void Driver_turn_right(int distance, int angle, int speed) {
 
 /* return whether successful or not */
 void Driver_go_straight(int distance, int speed) {
+	/* Check if user require to terminate current function */
+	if (FUNC_TERMINATED){
+		return;
+	}
+
 	Controller_run(distance*L_100MM2COUNT_RATIO, distance*R_100MM2COUNT_RATIO, speed, speed);
 }
 

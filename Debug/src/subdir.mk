@@ -8,6 +8,7 @@ C_SRCS += \
 ../src/Driver.c \
 ../src/Runner.c \
 ../src/adc.c \
+../src/button.c \
 ../src/delay.c \
 ../src/encoder.c \
 ../src/led.c \
@@ -24,6 +25,7 @@ OBJS += \
 ./src/Driver.o \
 ./src/Runner.o \
 ./src/adc.o \
+./src/button.o \
 ./src/delay.o \
 ./src/encoder.o \
 ./src/led.o \
@@ -40,6 +42,7 @@ C_DEPS += \
 ./src/Driver.d \
 ./src/Runner.d \
 ./src/adc.d \
+./src/button.d \
 ./src/delay.d \
 ./src/encoder.d \
 ./src/led.d \

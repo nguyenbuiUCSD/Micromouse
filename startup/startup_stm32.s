@@ -146,7 +146,7 @@ g_pfnVectors:
 	.word	0
 	.word	0
 	.word	0
-	.word	0
+	.word	EXTI9_5_IRQHandler
 	.word	0
 	.word	0
 	.word	0
@@ -240,6 +240,9 @@ g_pfnVectors:
 
 	.weak	SysTick_Handler
 	.thumb_set SysTick_Handler,Default_Handler
+
+	.weak	EXTI9_5_IRQHandler
+	.thumb_set EXTI9_5_IRQHandler,Default_Handler
 
 	.weak	SystemInit
 

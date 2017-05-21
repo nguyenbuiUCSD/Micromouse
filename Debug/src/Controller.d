@@ -38,6 +38,7 @@ src/Controller.o: ../src/Controller.c \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/adc.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/pid.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/sensor.h \
+ /Users/nguyenbui/Documents/workspace/Micromouse/inc/button.h \
  /Users/nguyenbui/Documents/workspace/Micromouse/inc/global.h
 
 /Users/nguyenbui/Documents/workspace/Micromouse/CMSIS/device/stm32f4xx.h:
@@ -117,5 +118,7 @@ src/Controller.o: ../src/Controller.c \
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/pid.h:
 
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/sensor.h:
+
+/Users/nguyenbui/Documents/workspace/Micromouse/inc/button.h:
 
 /Users/nguyenbui/Documents/workspace/Micromouse/inc/global.h:

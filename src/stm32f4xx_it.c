@@ -37,7 +37,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_it.h"
 #include "delay.h"
+#include "led.h"
 #include "encoder.h"
+#include "Controller.h"
 
 
 /** @addtogroup Template_Project
@@ -156,7 +158,7 @@ void SysTick_Handler(void){
 	// Get the speed with counts/ms
 	//	This only use for basic mouse with small number of count
 	//if ((Millis&0x0000000F) == 10)
-		update_speed();
+	update_speed();
 }
 
 
@@ -177,6 +179,17 @@ void SysTick_Handler(void){
 {
 }*/
 
+void EXTI9_5_IRQHandler(void) {
+
+	if(EXTI_GetITStatus(EXTI_Line8) != RESET) {
+		Controller_button2_interrupt_handler();
+
+		EXTI_ClearITPendingBit(EXTI_Line8);
+		__enable_irq();
+
+	}
+
+}
 
 
 /**

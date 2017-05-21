@@ -14,10 +14,13 @@
 #include "adc.h"
 #include "pid.h"
 #include "sensor.h"
+#include "button.h"
 #include "global.h"
 /*
  * This function is used to initialize all hardware needed.
  */
+volatile int FUNC_TERMINATED = 0;
+
 void Controller_hardware_init(void) {
 
 	Systick_Configuration();
@@ -33,7 +36,9 @@ void Controller_hardware_init(void) {
 
 	ADC_Config();
 
-	delay_ms(5000);
+	button_Configuration();
+
+	delay_ms(1000);
 }
 
 /*
@@ -49,6 +54,13 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 
 	volatile int wall_err = 0;
 
+
+	/* Check if user require to terminate current function */
+	if (FUNC_TERMINATED){
+		setLeftPwm(0);
+		setRightPwm(0);
+		return;
+	}
 
 	// Reset PID
 	pid_reset();
@@ -136,6 +148,13 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 		// Set pwm
 		setLeftPwm(lpwm);
 		setRightPwm(rpwm);
+
+		/* Check if user require to terminate current function */
+		if (FUNC_TERMINATED){
+			setLeftPwm(0);
+			setRightPwm(0);
+			return;
+		}
 	}
 
 }
@@ -149,6 +168,14 @@ void Controller_frontwall_corection(){
 	// Reset PID
 	pid_reset();
 	while((Millis - current_time) < 500){
+
+		/* CHECK IF USER SEND A SIGNAL TO TERMINATE CURRENT FUCTION */
+		if (FUNC_TERMINATED){
+			setLeftPwm(0);
+			setRightPwm(0);
+			return;
+		}
+
 		readFrontSensor();
 		front_left = (CENTER_TO_FRONT_LEFT - FLSensor)/FRONT_WALL_SENSOR_RATIO;
 		front_right = (CENTER_TO_FRONT_RIGHT - FRSensor)/FRONT_WALL_SENSOR_RATIO;
@@ -176,6 +203,8 @@ void Controller_frontwall_corection(){
 	Controller_run(0,0,0,0);
 }
 
+
+
 int Controller_checkwall(void)
 {
 	int returnvalue = 0;
@@ -190,4 +219,134 @@ int Controller_checkwall(void)
 
 	return returnvalue;
 
+}
+
+/*
+ * Button 1 interrupt handler
+ */
+void Controller_button1_interrupt_handler(){
+	FUNC_TERMINATED = 1;
+}
+
+/*
+ * Button 1 interrupt handler
+ */
+void Controller_button2_interrupt_handler(){
+	FUNC_TERMINATED = 1;
+}
+
+
+/*
+ * WRITE TO FLASH
+ */
+void Controller_writeFlash(void){
+  int i, j;
+
+  FLASH_Unlock();
+
+
+  FLASH_ClearFlag( FLASH_FLAG_EOP|FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR|FLASH_FLAG_PGAERR|FLASH_FLAG_PGPERR|FLASH_FLAG_PGSERR);
+/**
+  * @brief  Erases a specified FLASH Sector.
+  *
+  * @param  FLASH_Sector: The Sector number to be erased.
+  *          This parameter can be a value between FLASH_Sector_0 and FLASH_Sector_11
+  *
+  * @param  VoltageRange: The device voltage range which defines the erase parallelism.
+  *          This parameter can be one of the following values:
+  *            @arg VoltageRange_1: when the device voltage range is 1.8V to 2.1V,
+  *                                  the operation will be done by byte (8-bit)
+  *            @arg VoltageRange_2: when the device voltage range is 2.1V to 2.7V,
+  *                                  the operation will be done by half word (16-bit)
+  *            @arg VoltageRange_3: when the device voltage range is 2.7V to 3.6V,
+  *                                  the operation will be done by word (32-bit)
+  *            @arg VoltageRange_4: when the device voltage range is 2.7V to 3.6V + External Vpp,
+  *                                  the operation will be done by double word (64-bit)
+  *
+  * @retval FLASH Status: The returned value can be: FLASH_BUSY, FLASH_ERROR_PROGRAM,
+  *                       FLASH_ERROR_WRP, FLASH_ERROR_OPERATION or FLASH_COMPLETE.
+  */
+  FLASH_EraseSector(FLASH_Sector_10, VoltageRange_3);
+
+  for(i=0; i<MAZE_SIZE; i++)
+    for(j=0; j<MAZE_SIZE; j++)
+    	FLASH_ProgramWord((MAZE_ADRESS + (i*MAZE_SIZE+j)*4), maze[i][j]);
+
+  FLASH_Lock();
+}
+
+
+void Controller_readMazeFlash(void){
+  u32 i, j;
+  for(i=0; i<MAZE_SIZE; i++)
+    for(j=0; j<MAZE_SIZE; j++)
+      maze[i][j] = *(int *)(MAZE_ADRESS + (i*MAZE_SIZE+j)*4);
+}
+
+
+int Controller_mode_select(){
+	int mode = MODE_DEFAULT;
+	int old_left_dst = getLeftDistance();
+	int old_right_dst = getRightDistance();
+
+
+
+	int encode_val, exit = 0;
+	int count;
+
+
+	while (exit != 100000){
+
+		encode_val = getRightEncCount() - old_right_dst;
+		exit = getLeftEncCount() - old_left_dst;
+
+
+		// This determine to exit the loop
+		count = 0;
+		while (exit > 2000){
+			exit = getLeftEncCount() - old_left_dst;
+			ALL_LED_ON;
+			delay_ms(300);
+			ALL_LED_OFF;
+			delay_ms(300);
+			count ++;
+			if (count  == 10){
+				exit = 100000;
+				break;
+			}
+		}
+
+		if (encode_val < 3001){
+			mode = MODE_DEFAULT;
+			ALL_LED_OFF;
+			LED1_ON;
+		} else if ((encode_val > 3000)&&(encode_val < 5001)){
+			mode = MODE_DEFAULT;
+			ALL_LED_OFF;
+			LED2_ON;
+		} else if ((encode_val > 5000)&&(encode_val < 7001)){
+			mode = MODE_DEFAULT;
+			ALL_LED_OFF;
+			LED3_ON;
+		} else if ((encode_val > 7000)&&(encode_val < 9001)){
+			mode = MODE_DEFAULT;
+			ALL_LED_OFF;
+			LED4_ON;
+		}else if ((encode_val > 9000)&&(encode_val < 11001)){
+			mode = MODE_DEFAULT;
+			ALL_LED_OFF;
+			LED5_ON;
+		}else if ((encode_val > 11000)&&(encode_val < 13001)){
+			mode = MODE_DEFAULT;
+			ALL_LED_OFF;
+			LED6_ON;
+		}else{
+			mode = MODE_DEFAULT;
+			LED1_ON;
+			LED4_ON;
+		}
+	}
+
+	delay_ms(100);
+	return mode;
 }

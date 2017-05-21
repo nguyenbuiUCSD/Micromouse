@@ -18,5 +18,9 @@
 void Controller_hardware_init(void );
 void Controller_run(int left_distance, int right_distance, int left_speed, int right_speed);
 void Controller_frontwall_corection(void );
+void Controller_button1_interrupt_handler(void);
+void Controller_button2_interrupt_handler(void);
 int Controller_checkwall(void);
+void Controller_readMazeFlash(void);
+void Controller_writeFlash(void);
 #endif /* CONTROLLER_H_ */
