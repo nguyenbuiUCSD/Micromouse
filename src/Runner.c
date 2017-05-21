@@ -35,6 +35,7 @@ void Runner_find_directions(int x_target, int y_target){
 	//first call flood fill
 	Runner_flood_fill();
 	int x_curr = 0, y_curr = 0;
+	int i = 0, j = 0;
 	while(1) {
 		if (x_curr == x_target && y_curr == y_target) {
 				break;
@@ -90,12 +91,61 @@ void Runner_find_directions(int x_target, int y_target){
 		}
 
 
-		maze[x_curr][y_curr] = maze[x_curr][y_curr] | (turn << DIRECTION);
+		maze[i][j] = maze[i][j] | (turn << DIRECTION);
+		//this marks that this is on the path
+		maze[i][j] = maze[i][j] | (1 << (DIRECTION + 2));
+		i = (i + 1) % 16;
+		if (i == 0) {
+			j++;
+		}
 		if (dir == WEST) x_curr--;
 		if (dir == EAST) x_curr++;
 		if (dir == SOUTH) y_curr--;
 		if (dir == NORTH) y_curr++;
 	}
+}
+
+void Runner_after_run(){
+	int x = 0;
+	int y = 0;
+	int done = 0;
+	for (int j = 0; j < 16; j++) {
+		if (!((maze[x][y] << (DIRECTION + 2)) & 1) || done) {
+			break;
+		}
+		for (int i = 0; i < 16; i++) {
+			if (!((maze[x][y] << (DIRECTION + 2)) & 1)) {
+				done = 1;
+				break;
+			}
+			int turn = maze[i][j] << DIRECTION & 1;
+			turn = turn | (((maze[i][j] << (DIRECTION + 1)) & 1) << 1);
+			if (turn == STRAIGHT) {
+				Driver_go_straight(CELL_WIDTH, EXPLORE_RUNNING_SPEED);
+				Driver_go_straight(0, 0);
+			}
+			else if (turn == LEFT) {
+						Driver_go_straight(HALF_CELL_WIDTH, EXPLORE_RUNNING_SPEED);
+						Controller_frontwall_corection();
+						Driver_go_straight(0, 0);
+						Driver_turn_left(0, 90, EXPLORE_TURNING_SPEED);
+						Driver_go_straight(0, 0);
+						Driver_go_straight(HALF_CELL_WIDTH, EXPLORE_RUNNING_SPEED);
+						Driver_go_straight(0, 0);
+			}
+			else if (turn == RIGHT) {
+						Driver_go_straight(HALF_CELL_WIDTH, EXPLORE_RUNNING_SPEED);
+						Controller_frontwall_corection();
+						Driver_go_straight(0, 0);
+						Driver_turn_right(0, 90, EXPLORE_TURNING_SPEED);
+						Driver_go_straight(0, 0);
+						Driver_go_straight(HALF_CELL_WIDTH, EXPLORE_RUNNING_SPEED);
+						Driver_go_straight(0, 0);
+			}
+		}
+	}
+
+
 }
 
 
