@@ -104,7 +104,6 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 			// read infomation
 			read_side_sensors();
 
-
 			// CASE 2: have left wall
 			if (LDSensor > (CENTER_TO_LEFT_WALL+300)){
 				if (temp > 300){

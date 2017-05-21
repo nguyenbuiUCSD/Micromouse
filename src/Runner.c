@@ -646,7 +646,8 @@ void Runner_explore(int x_target, int y_target) {
 
 	/* For first cell - always run forward */
 	if (x_coord == 0 && y_coord == 0){
-		maze[0][0] = 0x1E;
+		maze[0][0]&= 0xFFFFFFE0;
+		maze[0][0]|= 0x1E;
 	}
 	switch(curr_dir) {
 	case NORTH:

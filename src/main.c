@@ -34,7 +34,7 @@ int main(void) {
 
 
 	// 3. START PROGRAM - choose mode -------------------------------------------------
-	mode = MODE_DEFAULT;//MODE_EXPLORE;
+	mode = MODE_TEST_SENSORS;//MODE_EXPLORE;
 	while (1){
 
 
@@ -50,7 +50,7 @@ int main(void) {
 		/*
 		 * Go straight for 3 cell
 		 */
-		Driver_go_straight(3*CELL_WIDTH, EXPLORE_RUNNING_SPEED);
+		Driver_go_straight(5*CELL_WIDTH, EXPLORE_RUNNING_SPEED);
 		Driver_go_straight(0,0);
 		delay_ms (10000);
 	}
@@ -257,6 +257,9 @@ int main(void) {
 			LED2_OFF;
 		}
 
+		/* Delay 5ms */
+		delay_ms(5);
+
 		/*
 		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
 		 */
@@ -313,7 +316,6 @@ int main(void) {
 			delay_ms(500);
 		}
 
-		mode = MODE_EXPLORE;
 		/*
 		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
 		 */
