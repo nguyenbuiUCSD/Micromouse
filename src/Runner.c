@@ -69,7 +69,8 @@ void Runner_flood_fill(){
 			}
 }
 
-/* Update distances according to new wall info found at x and y */
+/*
+// Update distances according to new wall info found at x and y
 void Runner_update_distances(int x, int y) {
 
 	// Make sure stack is empty
@@ -149,7 +150,7 @@ void Runner_update_distances(int x, int y) {
 
 	}
 }
-
+*/
 
 
 void Runner_random_turn() {
@@ -704,7 +705,8 @@ void Runner_explore(int x_target, int y_target) {
 		Runner_flood_fill();
 
 		/* Run either update distances of flood_fill */
-		Runner_update_distances(x_coord, y_coord, curr);
+		/* Using Stack */
+		/* Runner_update_distances(x_coord, y_coord, curr);*/
 
 		/*
 		 * Check distance of open neighbors

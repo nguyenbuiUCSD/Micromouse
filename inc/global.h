@@ -156,13 +156,15 @@ struct Coord {
 	unsigned char row;
 	unsigned char col;
 };
+
+
 typedef struct Coord COORD;
 
 /* Stack */
 #define STACKSIZE 512
 struct Stack {
 	struct Coord stack[STACKSIZE];
-	int top = -1;
+	int top;
 };
 typedef struct Stack STACK;
 

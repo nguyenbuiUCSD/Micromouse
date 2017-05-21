@@ -5247,7 +5247,7 @@ Discarded input sections
  .data          0x0000000000000000        0x0 src/Driver.o
  .bss           0x0000000000000000        0x0 src/Driver.o
  .debug_macro   0x0000000000000000      0x8aa src/Driver.o
- .debug_macro   0x0000000000000000      0x15d src/Driver.o
+ .debug_macro   0x0000000000000000      0x165 src/Driver.o
  COMMON         0x0000000000000000       0x14 src/Driver.o
  .group         0x0000000000000000        0x8 src/Runner.o
  .group         0x0000000000000000        0x8 src/Runner.o
@@ -5364,7 +5364,24 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x22 src/Runner.o
  .debug_macro   0x0000000000000000       0x10 src/Runner.o
  .debug_macro   0x0000000000000000       0x2e src/Runner.o
- .debug_macro   0x0000000000000000      0x15d src/Runner.o
+ .debug_macro   0x0000000000000000      0x165 src/Runner.o
+ .group         0x0000000000000000        0x8 src/Stack.o
+ .group         0x0000000000000000        0x8 src/Stack.o
+ .text          0x0000000000000000        0x0 src/Stack.o
+ .data          0x0000000000000000        0x0 src/Stack.o
+ .bss           0x0000000000000000        0x0 src/Stack.o
+ .debug_info    0x0000000000000000       0x37 src/Stack.o
+ .debug_abbrev  0x0000000000000000       0x29 src/Stack.o
+ .debug_aranges
+                0x0000000000000000       0x18 src/Stack.o
+ .debug_macro   0x0000000000000000       0x1a src/Stack.o
+ .debug_macro   0x0000000000000000      0x8aa src/Stack.o
+ .debug_macro   0x0000000000000000      0x165 src/Stack.o
+ .debug_line    0x0000000000000000       0x6f src/Stack.o
+ .debug_str     0x0000000000000000     0x29a3 src/Stack.o
+ .comment       0x0000000000000000       0x6f src/Stack.o
+ .ARM.attributes
+                0x0000000000000000       0x39 src/Stack.o
  .group         0x0000000000000000        0x8 src/adc.o
  .group         0x0000000000000000        0x8 src/adc.o
  .group         0x0000000000000000        0x8 src/adc.o
@@ -5446,7 +5463,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000      0x188 src/adc.o
  .debug_macro   0x0000000000000000      0x149 src/adc.o
  .debug_macro   0x0000000000000000       0x35 src/adc.o
- .debug_macro   0x0000000000000000      0x15d src/adc.o
+ .debug_macro   0x0000000000000000      0x165 src/adc.o
  .debug_macro   0x0000000000000000       0x8e src/adc.o
  .group         0x0000000000000000        0x8 src/button.o
  .group         0x0000000000000000        0x8 src/button.o
@@ -5818,7 +5835,7 @@ Discarded input sections
  .text          0x0000000000000000        0x0 src/main.o
  .data          0x0000000000000000        0x0 src/main.o
  .debug_macro   0x0000000000000000      0x8aa src/main.o
- .debug_macro   0x0000000000000000      0x15d src/main.o
+ .debug_macro   0x0000000000000000      0x165 src/main.o
  .debug_macro   0x0000000000000000       0x2e src/main.o
  .debug_macro   0x0000000000000000       0x6b src/main.o
  .debug_macro   0x0000000000000000       0x3b src/main.o
@@ -6074,7 +6091,7 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0xd7 src/sensor.o
  .debug_macro   0x0000000000000000       0x16 src/sensor.o
  .debug_macro   0x0000000000000000      0x18b src/sensor.o
- .debug_macro   0x0000000000000000      0x15d src/sensor.o
+ .debug_macro   0x0000000000000000      0x165 src/sensor.o
  .debug_macro   0x0000000000000000       0x28 src/sensor.o
  .debug_macro   0x0000000000000000       0x22 src/sensor.o
  .debug_macro   0x0000000000000000       0x10 src/sensor.o
@@ -6479,6 +6496,7 @@ LOAD StdPeriph_Driver/src/stm32f4xx_wwdg.o
 LOAD src/Controller.o
 LOAD src/Driver.o
 LOAD src/Runner.o
+LOAD src/Stack.o
 LOAD src/adc.o
 LOAD src/button.o
 LOAD src/delay.o
@@ -6918,64 +6936,66 @@ LOAD /Applications/Ac6/SystemWorkbench.app/Contents/Eclipse/plugins/fr.ac6.mcu.e
  .igot.plt      0x0000000020000440        0x0 /Applications/Ac6/SystemWorkbench.app/Contents/Eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.macos64_1.13.1.201703061524/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
                 0x0000000020000440                . = ALIGN (0x4)
 
-.bss            0x0000000020000440      0x880 load address 0x0000000008003e54
+.bss            0x0000000020000440      0xc84 load address 0x0000000008003e54
                 0x0000000020000440                _sbss = .
                 0x0000000020000440                __bss_start__ = _sbss
  *(.bss)
  .bss           0x0000000020000440       0x1c /Applications/Ac6/SystemWorkbench.app/Contents/Eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.macos64_1.13.1.201703061524/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtbegin.o
  .bss           0x000000002000045c        0x4 src/Controller.o
                 0x000000002000045c                FUNC_TERMINATED
- .bss           0x0000000020000460       0x10 src/Runner.o
+ .bss           0x0000000020000460      0x414 src/Runner.o
                 0x0000000020000460                x_coord
                 0x0000000020000464                y_coord
                 0x0000000020000468                curr_dir
                 0x000000002000046c                turn
- .bss           0x0000000020000470       0x10 src/encoder.o
-                0x0000000020000470                global_left_dist
-                0x0000000020000474                global_right_dist
-                0x0000000020000478                global_left_speed
-                0x000000002000047c                global_right_speed
- .bss           0x0000000020000480        0x8 src/main.o
-                0x0000000020000480                test
-                0x0000000020000484                mode
- .bss           0x0000000020000488        0x8 src/pwm.o
-                0x0000000020000488                CCR1_Val
-                0x000000002000048a                CCR2_Val
-                0x000000002000048c                CCR3_Val
-                0x000000002000048e                CCR4_Val
- .bss           0x0000000020000490       0x18 src/sensor.o
-                0x0000000020000490                volMeter
-                0x0000000020000494                voltage
-                0x0000000020000498                FLSensor
-                0x000000002000049c                FRSensor
-                0x00000000200004a0                LDSensor
-                0x00000000200004a4                RDSensor
+                0x0000000020000470                s
+ .bss           0x0000000020000874       0x10 src/encoder.o
+                0x0000000020000874                global_left_dist
+                0x0000000020000878                global_right_dist
+                0x000000002000087c                global_left_speed
+                0x0000000020000880                global_right_speed
+ .bss           0x0000000020000884        0x8 src/main.o
+                0x0000000020000884                test
+                0x0000000020000888                mode
+ .bss           0x000000002000088c        0x8 src/pwm.o
+                0x000000002000088c                CCR1_Val
+                0x000000002000088e                CCR2_Val
+                0x0000000020000890                CCR3_Val
+                0x0000000020000892                CCR4_Val
+ .bss           0x0000000020000894       0x18 src/sensor.o
+                0x0000000020000894                volMeter
+                0x0000000020000898                voltage
+                0x000000002000089c                FLSensor
+                0x00000000200008a0                FRSensor
+                0x00000000200008a4                LDSensor
+                0x00000000200008a8                RDSensor
  *(.bss*)
  *(COMMON)
- COMMON         0x00000000200004a8        0x8 src/Controller.o
-                0x00000000200004a8                Micros
-                0x00000000200004ac                Millis
- COMMON         0x00000000200004b0      0x800 src/Runner.o
-                0x00000000200004b0                maze_flood_fill
-                0x00000000200008b0                maze
- COMMON         0x0000000020000cb0       0x10 src/pid.o
-                0x0000000020000cb0                left_intergral
-                0x0000000020000cb4                right_old_err
-                0x0000000020000cb8                right_intergral
-                0x0000000020000cbc                left_old_err
-                0x0000000020000cc0                . = ALIGN (0x4)
-                0x0000000020000cc0                _ebss = .
-                0x0000000020000cc0                __bss_end__ = _ebss
+ COMMON         0x00000000200008ac        0x8 src/Controller.o
+                0x00000000200008ac                Micros
+                0x00000000200008b0                Millis
+ COMMON         0x00000000200008b4      0x800 src/Runner.o
+                0x00000000200008b4                maze_flood_fill
+                0x0000000020000cb4                maze
+ COMMON         0x00000000200010b4       0x10 src/pid.o
+                0x00000000200010b4                left_intergral
+                0x00000000200010b8                right_old_err
+                0x00000000200010bc                right_intergral
+                0x00000000200010c0                left_old_err
+                0x00000000200010c4                . = ALIGN (0x4)
+                0x00000000200010c4                _ebss = .
+                0x00000000200010c4                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x0000000020000cc0      0x400 load address 0x0000000008003e54
-                0x0000000020000cc0                . = ALIGN (0x8)
-                0x0000000020000cc0                PROVIDE (end, .)
+                0x00000000200010c4      0x404 load address 0x0000000008003e54
+                0x00000000200010c8                . = ALIGN (0x8)
+ *fill*         0x00000000200010c4        0x4 
+                0x00000000200010c8                PROVIDE (end, .)
                 [!provide]                        PROVIDE (_end, .)
-                0x0000000020000cc0                . = (. + _Min_Heap_Size)
-                0x00000000200010c0                . = (. + _Min_Stack_Size)
- *fill*         0x0000000020000cc0      0x400 
-                0x00000000200010c0                . = ALIGN (0x8)
+                0x00000000200010c8                . = (. + _Min_Heap_Size)
+                0x00000000200014c8                . = (. + _Min_Stack_Size)
+ *fill*         0x00000000200010c8      0x400 
+                0x00000000200014c8                . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -7051,7 +7071,7 @@ LOAD /Applications/Ac6/SystemWorkbench.app/Contents/Eclipse/plugins/fr.ac6.mcu.e
                 0x0000000000000699       0x22 /Applications/Ac6/SystemWorkbench.app/Contents/Eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.macos64_1.13.1.201703061524/tools/compiler/bin/../lib/gcc/arm-none-eabi/5.4.1/armv7e-m/fpu/crtn.o
 OUTPUT(Micromouse.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000     0x8eee
+.debug_info     0x0000000000000000     0x8f73
  .debug_info    0x0000000000000000      0x55e StdPeriph_Driver/src/misc.o
  .debug_info    0x000000000000055e      0xc48 StdPeriph_Driver/src/stm32f4xx_adc.o
  .debug_info    0x00000000000011a6      0x350 StdPeriph_Driver/src/stm32f4xx_exti.o
@@ -7061,22 +7081,22 @@ OUTPUT(Micromouse.elf elf32-littlearm)
  .debug_info    0x00000000000032bf      0x2a0 StdPeriph_Driver/src/stm32f4xx_syscfg.o
  .debug_info    0x000000000000355f     0x1c71 StdPeriph_Driver/src/stm32f4xx_tim.o
  .debug_info    0x00000000000051d0      0x4b2 src/Controller.o
- .debug_info    0x0000000000005682      0x1e9 src/Driver.o
- .debug_info    0x000000000000586b      0x3f6 src/Runner.o
- .debug_info    0x0000000000005c61      0x53a src/adc.o
- .debug_info    0x000000000000619b      0x5fe src/button.o
- .debug_info    0x0000000000006799      0x7cd src/delay.o
- .debug_info    0x0000000000006f66      0x598 src/encoder.o
- .debug_info    0x00000000000074fe      0x2bd src/led.o
- .debug_info    0x00000000000077bb      0x30c src/main.o
- .debug_info    0x0000000000007ac7      0x19b src/pid.o
- .debug_info    0x0000000000007c62      0x65a src/pwm.o
- .debug_info    0x00000000000082bc      0x3e4 src/sensor.o
- .debug_info    0x00000000000086a0      0x1c8 src/stm32f4xx_it.o
- .debug_info    0x0000000000008868      0x611 src/system_stm32f4xx.o
- .debug_info    0x0000000000008e79       0x75 startup/startup_stm32.o
+ .debug_info    0x0000000000005682      0x1f7 src/Driver.o
+ .debug_info    0x0000000000005879      0x46d src/Runner.o
+ .debug_info    0x0000000000005ce6      0x53a src/adc.o
+ .debug_info    0x0000000000006220      0x5fe src/button.o
+ .debug_info    0x000000000000681e      0x7cd src/delay.o
+ .debug_info    0x0000000000006feb      0x598 src/encoder.o
+ .debug_info    0x0000000000007583      0x2bd src/led.o
+ .debug_info    0x0000000000007840      0x30c src/main.o
+ .debug_info    0x0000000000007b4c      0x19b src/pid.o
+ .debug_info    0x0000000000007ce7      0x65a src/pwm.o
+ .debug_info    0x0000000000008341      0x3e4 src/sensor.o
+ .debug_info    0x0000000000008725      0x1c8 src/stm32f4xx_it.o
+ .debug_info    0x00000000000088ed      0x611 src/system_stm32f4xx.o
+ .debug_info    0x0000000000008efe       0x75 startup/startup_stm32.o
 
-.debug_abbrev   0x0000000000000000     0x1db2
+.debug_abbrev   0x0000000000000000     0x1e22
  .debug_abbrev  0x0000000000000000      0x14c StdPeriph_Driver/src/misc.o
  .debug_abbrev  0x000000000000014c      0x19d StdPeriph_Driver/src/stm32f4xx_adc.o
  .debug_abbrev  0x00000000000002e9      0x1ae StdPeriph_Driver/src/stm32f4xx_exti.o
@@ -7086,20 +7106,20 @@ OUTPUT(Micromouse.elf elf32-littlearm)
  .debug_abbrev  0x000000000000097a      0x138 StdPeriph_Driver/src/stm32f4xx_syscfg.o
  .debug_abbrev  0x0000000000000ab2      0x18e StdPeriph_Driver/src/stm32f4xx_tim.o
  .debug_abbrev  0x0000000000000c40      0x1f8 src/Controller.o
- .debug_abbrev  0x0000000000000e38       0x9b src/Driver.o
- .debug_abbrev  0x0000000000000ed3      0x179 src/Runner.o
- .debug_abbrev  0x000000000000104c      0x152 src/adc.o
- .debug_abbrev  0x000000000000119e      0x122 src/button.o
- .debug_abbrev  0x00000000000012c0      0x1ee src/delay.o
- .debug_abbrev  0x00000000000014ae      0x174 src/encoder.o
- .debug_abbrev  0x0000000000001622      0x108 src/led.o
- .debug_abbrev  0x000000000000172a      0x128 src/main.o
- .debug_abbrev  0x0000000000001852       0x8c src/pid.o
- .debug_abbrev  0x00000000000018de      0x17f src/pwm.o
- .debug_abbrev  0x0000000000001a5d      0x10d src/sensor.o
- .debug_abbrev  0x0000000000001b6a       0xf9 src/stm32f4xx_it.o
- .debug_abbrev  0x0000000000001c63      0x13d src/system_stm32f4xx.o
- .debug_abbrev  0x0000000000001da0       0x12 startup/startup_stm32.o
+ .debug_abbrev  0x0000000000000e38       0xa6 src/Driver.o
+ .debug_abbrev  0x0000000000000ede      0x1de src/Runner.o
+ .debug_abbrev  0x00000000000010bc      0x152 src/adc.o
+ .debug_abbrev  0x000000000000120e      0x122 src/button.o
+ .debug_abbrev  0x0000000000001330      0x1ee src/delay.o
+ .debug_abbrev  0x000000000000151e      0x174 src/encoder.o
+ .debug_abbrev  0x0000000000001692      0x108 src/led.o
+ .debug_abbrev  0x000000000000179a      0x128 src/main.o
+ .debug_abbrev  0x00000000000018c2       0x8c src/pid.o
+ .debug_abbrev  0x000000000000194e      0x17f src/pwm.o
+ .debug_abbrev  0x0000000000001acd      0x10d src/sensor.o
+ .debug_abbrev  0x0000000000001bda       0xf9 src/stm32f4xx_it.o
+ .debug_abbrev  0x0000000000001cd3      0x13d src/system_stm32f4xx.o
+ .debug_abbrev  0x0000000000001e10       0x12 startup/startup_stm32.o
 
 .debug_aranges  0x0000000000000000      0xc50
  .debug_aranges
@@ -7174,7 +7194,7 @@ OUTPUT(Micromouse.elf elf32-littlearm)
  .debug_ranges  0x0000000000000ad8       0x20 src/system_stm32f4xx.o
  .debug_ranges  0x0000000000000af8       0x20 startup/startup_stm32.o
 
-.debug_macro    0x0000000000000000    0x135b2
+.debug_macro    0x0000000000000000    0x135ba
  .debug_macro   0x0000000000000000      0x1be StdPeriph_Driver/src/misc.o
  .debug_macro   0x00000000000001be      0x8aa StdPeriph_Driver/src/misc.o
  .debug_macro   0x0000000000000a68       0x6b StdPeriph_Driver/src/misc.o
@@ -7260,26 +7280,26 @@ OUTPUT(Micromouse.elf elf32-littlearm)
  .debug_macro   0x0000000000011b55       0x16 src/Controller.o
  .debug_macro   0x0000000000011b6b       0x29 src/Controller.o
  .debug_macro   0x0000000000011b94       0x28 src/Controller.o
- .debug_macro   0x0000000000011bbc      0x15d src/Controller.o
- .debug_macro   0x0000000000011d19       0x2f src/Driver.o
- .debug_macro   0x0000000000011d48       0x2e src/Driver.o
- .debug_macro   0x0000000000011d76      0x2a1 src/Runner.o
- .debug_macro   0x0000000000012017      0x10e src/Runner.o
- .debug_macro   0x0000000000012125       0x8d src/Runner.o
- .debug_macro   0x00000000000121b2      0x1c0 src/adc.o
- .debug_macro   0x0000000000012372      0x1ae src/button.o
- .debug_macro   0x0000000000012520      0x1c6 src/delay.o
- .debug_macro   0x00000000000126e6      0x1ae src/encoder.o
- .debug_macro   0x0000000000012894      0x1ae src/led.o
- .debug_macro   0x0000000000012a42      0x217 src/main.o
- .debug_macro   0x0000000000012c59       0x59 src/pid.o
- .debug_macro   0x0000000000012cb2      0x1cc src/pwm.o
- .debug_macro   0x0000000000012e7e      0x324 src/sensor.o
- .debug_macro   0x00000000000131a2       0x52 src/sensor.o
- .debug_macro   0x00000000000131f4      0x1ec src/stm32f4xx_it.o
- .debug_macro   0x00000000000133e0      0x1d2 src/system_stm32f4xx.o
+ .debug_macro   0x0000000000011bbc      0x165 src/Controller.o
+ .debug_macro   0x0000000000011d21       0x2f src/Driver.o
+ .debug_macro   0x0000000000011d50       0x2e src/Driver.o
+ .debug_macro   0x0000000000011d7e      0x2a1 src/Runner.o
+ .debug_macro   0x000000000001201f      0x10e src/Runner.o
+ .debug_macro   0x000000000001212d       0x8d src/Runner.o
+ .debug_macro   0x00000000000121ba      0x1c0 src/adc.o
+ .debug_macro   0x000000000001237a      0x1ae src/button.o
+ .debug_macro   0x0000000000012528      0x1c6 src/delay.o
+ .debug_macro   0x00000000000126ee      0x1ae src/encoder.o
+ .debug_macro   0x000000000001289c      0x1ae src/led.o
+ .debug_macro   0x0000000000012a4a      0x217 src/main.o
+ .debug_macro   0x0000000000012c61       0x59 src/pid.o
+ .debug_macro   0x0000000000012cba      0x1cc src/pwm.o
+ .debug_macro   0x0000000000012e86      0x324 src/sensor.o
+ .debug_macro   0x00000000000131aa       0x52 src/sensor.o
+ .debug_macro   0x00000000000131fc      0x1ec src/stm32f4xx_it.o
+ .debug_macro   0x00000000000133e8      0x1d2 src/system_stm32f4xx.o
 
-.debug_line     0x0000000000000000     0xa9fd
+.debug_line     0x0000000000000000     0xa9ff
  .debug_line    0x0000000000000000      0x6d7 StdPeriph_Driver/src/misc.o
  .debug_line    0x00000000000006d7      0x9ed StdPeriph_Driver/src/stm32f4xx_adc.o
  .debug_line    0x00000000000010c4      0x727 StdPeriph_Driver/src/stm32f4xx_exti.o
@@ -7290,21 +7310,21 @@ OUTPUT(Micromouse.elf elf32-littlearm)
  .debug_line    0x0000000000003bd6      0xf51 StdPeriph_Driver/src/stm32f4xx_tim.o
  .debug_line    0x0000000000004b27      0xa08 src/Controller.o
  .debug_line    0x000000000000552f      0x117 src/Driver.o
- .debug_line    0x0000000000005646      0xa4f src/Runner.o
- .debug_line    0x0000000000006095      0x6ea src/adc.o
- .debug_line    0x000000000000677f      0x67d src/button.o
- .debug_line    0x0000000000006dfc      0x784 src/delay.o
- .debug_line    0x0000000000007580      0x6d7 src/encoder.o
- .debug_line    0x0000000000007c57      0x675 src/led.o
- .debug_line    0x00000000000082cc      0x836 src/main.o
- .debug_line    0x0000000000008b02       0x9a src/pid.o
- .debug_line    0x0000000000008b9c      0x6e7 src/pwm.o
- .debug_line    0x0000000000009283      0x862 src/sensor.o
- .debug_line    0x0000000000009ae5      0x7ab src/stm32f4xx_it.o
- .debug_line    0x000000000000a290      0x6f4 src/system_stm32f4xx.o
- .debug_line    0x000000000000a984       0x79 startup/startup_stm32.o
+ .debug_line    0x0000000000005646      0xa51 src/Runner.o
+ .debug_line    0x0000000000006097      0x6ea src/adc.o
+ .debug_line    0x0000000000006781      0x67d src/button.o
+ .debug_line    0x0000000000006dfe      0x784 src/delay.o
+ .debug_line    0x0000000000007582      0x6d7 src/encoder.o
+ .debug_line    0x0000000000007c59      0x675 src/led.o
+ .debug_line    0x00000000000082ce      0x836 src/main.o
+ .debug_line    0x0000000000008b04       0x9a src/pid.o
+ .debug_line    0x0000000000008b9e      0x6e7 src/pwm.o
+ .debug_line    0x0000000000009285      0x862 src/sensor.o
+ .debug_line    0x0000000000009ae7      0x7ab src/stm32f4xx_it.o
+ .debug_line    0x000000000000a292      0x6f4 src/system_stm32f4xx.o
+ .debug_line    0x000000000000a986       0x79 startup/startup_stm32.o
 
-.debug_str      0x0000000000000000    0x667b3
+.debug_str      0x0000000000000000    0x667da
  .debug_str     0x0000000000000000    0x5e222 StdPeriph_Driver/src/misc.o
                                       0x5e3cb (size before relaxing)
  .debug_str     0x000000000005e222      0x91f StdPeriph_Driver/src/stm32f4xx_adc.o
@@ -7321,33 +7341,33 @@ OUTPUT(Micromouse.elf elf32-littlearm)
                                       0x5e591 (size before relaxing)
  .debug_str     0x0000000000060612      0xc1b StdPeriph_Driver/src/stm32f4xx_tim.o
                                       0x5ee6a (size before relaxing)
- .debug_str     0x000000000006122d     0x47ea src/Controller.o
-                                      0x62a42 (size before relaxing)
- .debug_str     0x0000000000065a17      0x124 src/Driver.o
-                                       0x2ab2 (size before relaxing)
- .debug_str     0x0000000000065b3b      0x101 src/Runner.o
-                                      0x61229 (size before relaxing)
- .debug_str     0x0000000000065c3c       0x70 src/adc.o
-                                      0x5ed29 (size before relaxing)
- .debug_str     0x0000000000065cac      0x548 src/button.o
+ .debug_str     0x000000000006122d     0x47f8 src/Controller.o
+                                      0x62a50 (size before relaxing)
+ .debug_str     0x0000000000065a25      0x124 src/Driver.o
+                                       0x2ad7 (size before relaxing)
+ .debug_str     0x0000000000065b49      0x11a src/Runner.o
+                                      0x61250 (size before relaxing)
+ .debug_str     0x0000000000065c63       0x70 src/adc.o
+                                      0x5ed37 (size before relaxing)
+ .debug_str     0x0000000000065cd3      0x548 src/button.o
                                       0x5e995 (size before relaxing)
- .debug_str     0x00000000000661f4       0xbd src/delay.o
+ .debug_str     0x000000000006621b       0xbd src/delay.o
                                       0x5e861 (size before relaxing)
- .debug_str     0x00000000000662b1       0xa2 src/encoder.o
+ .debug_str     0x00000000000662d8       0xa2 src/encoder.o
                                       0x5e4a9 (size before relaxing)
- .debug_str     0x0000000000066353       0x1f src/led.o
+ .debug_str     0x000000000006637a       0x1f src/led.o
                                       0x5e307 (size before relaxing)
- .debug_str     0x0000000000066372       0x42 src/main.o
-                                      0x5eb86 (size before relaxing)
- .debug_str     0x00000000000663b4       0xfb src/pid.o
+ .debug_str     0x0000000000066399       0x42 src/main.o
+                                      0x5eb94 (size before relaxing)
+ .debug_str     0x00000000000663db       0xfb src/pid.o
                                        0x2644 (size before relaxing)
- .debug_str     0x00000000000664af      0x11c src/pwm.o
+ .debug_str     0x00000000000664d6      0x11c src/pwm.o
                                       0x5e5ed (size before relaxing)
- .debug_str     0x00000000000665cb       0x6c src/sensor.o
-                                      0x627c2 (size before relaxing)
- .debug_str     0x0000000000066637       0xd8 src/stm32f4xx_it.o
+ .debug_str     0x00000000000665f2       0x6c src/sensor.o
+                                      0x627d0 (size before relaxing)
+ .debug_str     0x000000000006665e       0xd8 src/stm32f4xx_it.o
                                       0x5e730 (size before relaxing)
- .debug_str     0x000000000006670f       0xa4 src/system_stm32f4xx.o
+ .debug_str     0x0000000000066736       0xa4 src/system_stm32f4xx.o
                                       0x5e3d6 (size before relaxing)
 
 .comment        0x0000000000000000       0x6e

@@ -5,7 +5,7 @@
  *      Author: Jocelyn
  */
 #include "global.h"
-
+/*
 int isEmpty(STACK * s) {
 
 	if(s->top == -1)
@@ -44,3 +44,4 @@ int push(STACK * s, int data) {
 		(s->stack)[s->top] = data;
 	}
 }
+*/
