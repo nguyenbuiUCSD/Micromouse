@@ -107,6 +107,7 @@ typedef int Cell_label;
 #define UTURN 2
 #define LEFT 3
 
+
 #define EXPLORE_RUNNING_SPEED 20
 #define EXPLORE_TURNING_SPEED 15
 
@@ -150,6 +151,20 @@ extern int turn;
 extern int maze[16][16];
 extern int maze_flood_fill[16][16];
 
+
+struct Coord {
+	unsigned char row;
+	unsigned char col;
+};
+typedef struct Coord COORD;
+
+/* Stack */
+#define STACKSIZE 512
+struct Stack {
+	struct Coord stack[STACKSIZE];
+	int top = -1;
+};
+typedef struct Stack STACK;
 
 
 

@@ -7,6 +7,7 @@ C_SRCS += \
 ../src/Controller.c \
 ../src/Driver.c \
 ../src/Runner.c \
+../src/Stack.c \
 ../src/adc.c \
 ../src/button.c \
 ../src/delay.c \
@@ -24,6 +25,7 @@ OBJS += \
 ./src/Controller.o \
 ./src/Driver.o \
 ./src/Runner.o \
+./src/Stack.o \
 ./src/adc.o \
 ./src/button.o \
 ./src/delay.o \
@@ -41,6 +43,7 @@ C_DEPS += \
 ./src/Controller.d \
 ./src/Driver.d \
 ./src/Runner.d \
+./src/Stack.d \
 ./src/adc.d \
 ./src/button.d \
 ./src/delay.d \
