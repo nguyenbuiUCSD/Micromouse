@@ -41,25 +41,25 @@ void Runner_find_directions(int x_target, int y_target){
 		int dir = 0;
 		int min = 256;
 		if (x_curr > 0) {
-			if (maze_flood_fill[x_curr - 1][y_curr] < min && !(maze[x_curr - 1][y_curr] & (1 << WEST))) {
+			if (maze_flood_fill[x_curr - 1][y_curr] < min && !(maze[x_curr][y_curr] & (1 << WEST))) {
 				min = maze_flood_fill[x_curr - 1][y_curr];
 				dir = WEST;
 			}
 		}
 		if (x_curr < 16) {
-			if (maze_flood_fill[x_curr + 1][y_curr] < min && !(maze[x_curr + 1][y_curr] & (1 << EAST))) {
+			if (maze_flood_fill[x_curr + 1][y_curr] < min && !(maze[x_curr][y_curr] & (1 << EAST))) {
 				min = maze_flood_fill[x_curr + 1][y_curr];
 				dir = EAST;
 			}
 		}
 		if (y_curr > 0) {
-			if (maze_flood_fill[x_curr][y_curr - 1] < min && !(maze[x_curr][y_curr - 1] & (1 << SOUTH))) {
+			if (maze_flood_fill[x_curr][y_curr - 1] < min && !(maze[x_curr][y_curr] & (1 << SOUTH))) {
 				min = maze_flood_fill[x_curr][y_curr - 1];
 				dir = SOUTH;
 			}
 		}
 		if (y_curr < 16) {
-			if (maze_flood_fill[x_curr][y_curr + 1] < min && !(maze[x_curr][y_curr + 1] & (1 << NORTH))) {
+			if (maze_flood_fill[x_curr][y_curr + 1] < min && !(maze[x_curr][y_curr] & (1 << NORTH))) {
 				min = maze_flood_fill[x_curr][y_curr + 1];
 				dir = NORTH;
 			}
