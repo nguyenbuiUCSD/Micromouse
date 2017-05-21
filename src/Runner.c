@@ -105,7 +105,7 @@ void Runner_find_directions(int x_target, int y_target){
 	}
 }
 
-void Runner_after_run(){
+void Runner_speed_run(){
 	int x = 0;
 	int y = 0;
 	int done = 0;

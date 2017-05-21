@@ -34,9 +34,72 @@ int main(void) {
 
 
 	// 3. START PROGRAM - choose mode -------------------------------------------------
-	mode = MODE_DEFAULT;//MODE_EXPLORE;
+	mode = MODE_TEST_SPEED_RUN;//MODE_EXPLORE;
 	while (1){
 
+
+	/* ===============================================================	*/
+	/*
+	 * Test encoder count by going straight-------------------
+	 */
+	while (mode == MODE_TEST_SPEED_RUN){
+		/*
+		 * BEFORE START ANY FUNCTION REMEMBER TO RESET FUNC_TERMINATED SIGNAL
+		 */
+		FUNC_TERMINATED = 0;
+
+		/*
+		 * Remember to reset current position if restart from [0,0]
+		 */
+		x_coord = 0;
+		y_coord = 0;
+		curr_dir = NORTH;
+		turn = STRAIGHT;
+
+		/* Warning before read from flash*/
+		for (int cnt = 0; cnt < 10; cnt ++){
+			LED1_ON;
+			LED6_ON;
+			delay_ms(200);
+			LED1_OFF;
+			LED6_OFF;
+			delay_ms(200);
+		}
+		/* Read maze from flash */
+		Controller_readMazeFlash();
+		delay_ms (8000);
+
+		/* Explore to the center */
+		Runner_explore(2,2);
+
+		/* Warning before save to flash*/
+		for (int cnt = 0; cnt < 10; cnt ++){
+			ALL_LED_ON;
+			delay_ms(200);
+			ALL_LED_OFF;
+			delay_ms(200);
+		}
+		/* Save the maze to flash */
+		Controller_writeFlash();
+		delay_ms (8000);
+
+		Runner_explore(0,0);
+		delay_ms (5000);
+		Runner_explore(7,7);
+		delay_ms (5000);
+		Runner_find_directions(7,7);
+		delay_ms (5000);
+		Runner_speed_run();
+
+		/*
+		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
+		 */
+		if (FUNC_TERMINATED){
+			mode = MODE_DEFAULT;
+		}
+
+		mode = MODE_DEFAULT;
+	}
 
 	/* ===============================================================	*/
 	/*
