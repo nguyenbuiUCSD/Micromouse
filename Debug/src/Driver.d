@@ -1,7 +1,6 @@
-src/Driver.o: ../src/Driver.c \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/Controller.h \
- /Users/nguyenbui/Documents/workspace/Micromouse/inc/global.h
+src/Driver.o: ../src/Driver.c /Users/andy/git/Micromouse/inc/Controller.h \
+ /Users/andy/git/Micromouse/inc/global.h
 
-/Users/nguyenbui/Documents/workspace/Micromouse/inc/Controller.h:
+/Users/andy/git/Micromouse/inc/Controller.h:
 
-/Users/nguyenbui/Documents/workspace/Micromouse/inc/global.h:
+/Users/andy/git/Micromouse/inc/global.h:

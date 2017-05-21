@@ -29,6 +29,50 @@ void Runner_maze_init(int x_target, int y_target){
 	}
 	maze[x_target][x_target] &= !(1<<VISITED_BIT_POSITION);
 }
+/* record the directions to get to the center */
+void Runner_find_directions(int x_target, int y_target){
+	//first call flood fill
+	Runner_flood_fill();
+	int x_curr = 0, y_curr = 0;
+	while(1) {
+		if (x_curr == x_target && y_curr == y_target) {
+				break;
+		}
+		int dir = 0;
+		int min = 256;
+		if (x_curr > 0) {
+			if (maze_flood_fill[x_curr - 1][y_curr] < min && !(maze[x_curr - 1][y_curr] & (1 << WEST))) {
+				min = maze_flood_fill[x_curr - 1][y_curr];
+				dir = WEST;
+			}
+		}
+		if (x_curr < 16) {
+			if (maze_flood_fill[x_curr + 1][y_curr] < min && !(maze[x_curr + 1][y_curr] & (1 << EAST))) {
+				min = maze_flood_fill[x_curr + 1][y_curr];
+				dir = EAST;
+			}
+		}
+		if (y_curr > 0) {
+			if (maze_flood_fill[x_curr][y_curr - 1] < min && !(maze[x_curr][y_curr - 1] & (1 << SOUTH))) {
+				min = maze_flood_fill[x_curr][y_curr - 1];
+				dir = SOUTH;
+			}
+		}
+		if (y_curr < 16) {
+			if (maze_flood_fill[x_curr][y_curr + 1] < min && !(maze[x_curr][y_curr + 1] & (1 << NORTH))) {
+				min = maze_flood_fill[x_curr][y_curr + 1];
+				dir = NORTH;
+			}
+		}
+		maze[x_curr][y_curr] = maze[x_curr][y_curr] | (1 << DIRECTION << dir);
+		if (dir == WEST) x_curr--;
+		if (dir == EAST) x_curr++;
+		if (dir == SOUTH) y_curr--;
+		if (dir == NORTH) y_curr++;
+	}
+}
+
+
 
 /* Update the the distances of the maze with new wall info */
 void Runner_flood_fill(){

@@ -31,7 +31,7 @@ typedef int Cell_label;
  */
 #define ROW_DEST 7
 #define COLUMN_DEST 7
-
+#define DIRECTION 7
 
 
 /*
