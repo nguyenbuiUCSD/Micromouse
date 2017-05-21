@@ -31,7 +31,7 @@ typedef int Cell_label;
  */
 #define ROW_DEST 7
 #define COLUMN_DEST 7
-#define DIRECTION 7
+#define DIRECTION 8
 
 
 /*
@@ -45,7 +45,7 @@ typedef int Cell_label;
 #define E_2	100 // 10^2
 #define CELL_WIDTH 180
 #define HALF_CELL_WIDTH 90
-#define HALF_CELL_WIDTH_WITH_ERR 60
+#define HALF_CELL_WIDTH_WITH_ERR 50
 
 /*
  * Using the new mice
@@ -74,17 +74,17 @@ typedef int Cell_label;
 #define LEFTWALL_BIT_POSITION 3
 #define RIGHTWALL_BIT_POSITION 1
 #define CENTER_TO_LEFT_WALL 1048
-#define CENTER_TO_RIGHT_WALL 867
-#define CENTER_TO_FRONT_RIGHT 3624
-#define CENTER_TO_FRONT_LEFT 2388
+#define CENTER_TO_RIGHT_WALL 700
+#define CENTER_TO_FRONT_RIGHT 3187
+#define CENTER_TO_FRONT_LEFT 2240
 
-#define FRONT_LEFT_THRESHOLD 250
-#define FRONT_RIGHT_THRESHOLD 250
+#define FRONT_LEFT_THRESHOLD 200
+#define FRONT_RIGHT_THRESHOLD 200
 #define DIAGNAL_LEFT_THRESHOLD 150
 #define DIAGNAL_RIGHT_THRESHOLD 150
 
 #define SENSOR_RATIO 25
-#define MAX_SENSOR_ERR 5
+#define MAX_SENSOR_ERR 2
 #define FRONT_WALL_CORRECTION_SPEED_LIMIT 10
 #define FRONT_WALL_SENSOR_RATIO 5
 
@@ -109,7 +109,10 @@ typedef int Cell_label;
 
 
 #define EXPLORE_RUNNING_SPEED 20
-#define EXPLORE_TURNING_SPEED 15
+#define EXPLORE_TURNING_SPEED 20
+#define RUNNING_SPEED 30
+#define TURNING_SPEED 30
+
 
 #define CURVE_TURN_DIA	90
 
@@ -127,7 +130,9 @@ typedef int Cell_label;
 #define MODE_EXPLORE 4
 #define MODE_TEST_SENSORS 5
 #define MODE_TEST_FLASH 6
-
+#define MODE_TEST_SPEED_RUN 7
+#define MODE_READ_FLASH 8
+#define MODE_WRITE_FLASH 9
 
 
 /*

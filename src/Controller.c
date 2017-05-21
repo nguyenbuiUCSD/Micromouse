@@ -89,8 +89,6 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 	left_EN = getLeftDistance();
 	right_EN = getRightDistance();
 
-
-
 	// This line of code can cause trouble if the encoder rigister is overflow
 	// Loop until mice finish the given distance
 	// Distance is allway positive, this was calculated from caller (Driver)
@@ -104,8 +102,74 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 			// read infomation
 			read_side_sensors();
 
+			// CASE 1: have both wall
+			if ((LDSensor > DIAGNAL_LEFT_THRESHOLD) &&((RDSensor > DIAGNAL_RIGHT_THRESHOLD))){
+				if (temp > 200){
+					if (LDSensor > (CENTER_TO_LEFT_WALL-70)){
+						wall_err = (LDSensor - CENTER_TO_LEFT_WALL)/SENSOR_RATIO;
+						// Check if error is valid for correction ( too far from wall)
+						if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
+						if (wall_err < -(MAX_SENSOR_ERR)) wall_err = -(MAX_SENSOR_ERR);
+					} else if (RDSensor > (CENTER_TO_RIGHT_WALL-50)){
+						wall_err = -(RDSensor - CENTER_TO_RIGHT_WALL)/SENSOR_RATIO;
+						// Check if error is valid for correction ( too far from wall)
+						if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
+						if (wall_err < -(MAX_SENSOR_ERR)) wall_err = -(MAX_SENSOR_ERR);
+					}  else {
+						temp = 0;
+						wall_err = 0;
+					}
+				} else {
+					temp ++;
+					wall_err = 0;
+				}
+
 			// CASE 2: have left wall
-			if (LDSensor > (CENTER_TO_LEFT_WALL+300)){
+			} else if (LDSensor > DIAGNAL_LEFT_THRESHOLD){
+				if (temp > 200){
+					if (LDSensor > (CENTER_TO_LEFT_WALL-100)){
+						wall_err = (LDSensor - CENTER_TO_LEFT_WALL)/SENSOR_RATIO;
+						// Check if error is valid for correction ( too far from wall)
+						if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
+						if (wall_err < -(MAX_SENSOR_ERR)) wall_err = -(MAX_SENSOR_ERR);
+					}  else {
+						temp = 0;
+						wall_err = 0;
+					}
+				} else {
+					temp ++;
+					wall_err = 0;
+				}
+
+			// CASE 3: have right wall
+				//TODO: implement something to distiquist these case
+				// reset value when switch case
+			} else if (RDSensor > DIAGNAL_RIGHT_THRESHOLD){
+				if (temp > 200){
+					if (RDSensor > (CENTER_TO_RIGHT_WALL-80)){
+						wall_err = -(RDSensor - CENTER_TO_RIGHT_WALL)/SENSOR_RATIO;
+						// Check if error is valid for correction ( too far from wall)
+						if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
+						if (wall_err < -(MAX_SENSOR_ERR)) wall_err = -(MAX_SENSOR_ERR);
+					} else {
+						temp = 0;
+						wall_err = 0;
+					}
+				} else {
+					temp ++;
+					wall_err = 0;
+				}
+
+			// CASE 4: Dont see any wall - reset value
+			} else {
+				temp = 0;
+				wall_err = 0;
+			}
+
+
+/*
+			// CASE 2: have left wall
+			if (LDSensor > DIAGNAL_LEFT_THRESHOLD){
 				if (temp > 300){
 					wall_err = (LDSensor - CENTER_TO_LEFT_WALL)/SENSOR_RATIO;
 					// Check if error is valid for correction ( too far from wall)
@@ -130,11 +194,16 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 				temp = 0;
 				wall_err = 0;
 			}
-		}
-		else {
+
+*/
+		} else {
 			wall_err = 0;
 		}
 
+
+
+		// Ignore wall error
+		// TODO: Implement follow wall
 
 		// Left motor error to PID
 		pid_err = left_speed - global_left_speed + wall_err;
@@ -148,12 +217,14 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 		setLeftPwm(lpwm);
 		setRightPwm(rpwm);
 
-		/* Check if user require to terminate current function */
+		// Check if user require to terminate current function
 		if (FUNC_TERMINATED){
 			setLeftPwm(0);
 			setRightPwm(0);
 			return;
 		}
+
+
 	}
 
 }
@@ -296,14 +367,14 @@ int Controller_mode_select(){
 
 	while (exit != 100000){
 
-		encode_val = getRightEncCount() - old_right_dst;
-		exit = getLeftEncCount() - old_left_dst;
+		encode_val = getRightDistance() - old_right_dst;
+		exit = getLeftDistance() - old_left_dst;
 
 
 		// This determine to exit the loop
 		count = 0;
 		while (exit > 2000){
-			exit = getLeftEncCount() - old_left_dst;
+			exit = getLeftDistance() - old_left_dst;
 			ALL_LED_ON;
 			delay_ms(300);
 			ALL_LED_OFF;
@@ -316,31 +387,31 @@ int Controller_mode_select(){
 		}
 
 		if (encode_val < 3001){
-			mode = MODE_DEFAULT;
+			mode = MODE_EXPLORE;//Left Green led
 			ALL_LED_OFF;
 			LED1_ON;
 		} else if ((encode_val > 3000)&&(encode_val < 5001)){
-			mode = MODE_DEFAULT;
+			mode = MODE_READ_FLASH; // left red led
 			ALL_LED_OFF;
 			LED2_ON;
 		} else if ((encode_val > 5000)&&(encode_val < 7001)){
-			mode = MODE_DEFAULT;
+			mode = MODE_WRITE_FLASH; // left blue
 			ALL_LED_OFF;
 			LED3_ON;
 		} else if ((encode_val > 7000)&&(encode_val < 9001)){
-			mode = MODE_DEFAULT;
+			mode = MODE_TEST_SPEED_RUN;//right green
 			ALL_LED_OFF;
 			LED4_ON;
 		}else if ((encode_val > 9000)&&(encode_val < 11001)){
-			mode = MODE_DEFAULT;
+			mode = MODE_TEST_SHARP_TURN;//right red
 			ALL_LED_OFF;
 			LED5_ON;
 		}else if ((encode_val > 11000)&&(encode_val < 13001)){
-			mode = MODE_DEFAULT;
+			mode = MODE_TEST_CURVE_TURN ;//right blue
 			ALL_LED_OFF;
 			LED6_ON;
 		}else{
-			mode = MODE_DEFAULT;
+			mode = MODE_TEST_GO_STRAIGHT;//2 side led
 			LED1_ON;
 			LED4_ON;
 		}

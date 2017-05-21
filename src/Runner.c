@@ -29,50 +29,6 @@ void Runner_maze_init(int x_target, int y_target){
 	}
 	maze[x_target][x_target] &= !(1<<VISITED_BIT_POSITION);
 }
-/* record the directions to get to the center */
-void Runner_find_directions(int x_target, int y_target){
-	//first call flood fill
-	Runner_flood_fill();
-	int x_curr = 0, y_curr = 0;
-	while(1) {
-		if (x_curr == x_target && y_curr == y_target) {
-				break;
-		}
-		int dir = 0;
-		int min = 256;
-		if (x_curr > 0) {
-			if (maze_flood_fill[x_curr - 1][y_curr] < min && !(maze[x_curr - 1][y_curr] & (1 << WEST))) {
-				min = maze_flood_fill[x_curr - 1][y_curr];
-				dir = WEST;
-			}
-		}
-		if (x_curr < 16) {
-			if (maze_flood_fill[x_curr + 1][y_curr] < min && !(maze[x_curr + 1][y_curr] & (1 << EAST))) {
-				min = maze_flood_fill[x_curr + 1][y_curr];
-				dir = EAST;
-			}
-		}
-		if (y_curr > 0) {
-			if (maze_flood_fill[x_curr][y_curr - 1] < min && !(maze[x_curr][y_curr - 1] & (1 << SOUTH))) {
-				min = maze_flood_fill[x_curr][y_curr - 1];
-				dir = SOUTH;
-			}
-		}
-		if (y_curr < 16) {
-			if (maze_flood_fill[x_curr][y_curr + 1] < min && !(maze[x_curr][y_curr + 1] & (1 << NORTH))) {
-				min = maze_flood_fill[x_curr][y_curr + 1];
-				dir = NORTH;
-			}
-		}
-		maze[x_curr][y_curr] = maze[x_curr][y_curr] | (1 << DIRECTION << dir);
-		if (dir == WEST) x_curr--;
-		if (dir == EAST) x_curr++;
-		if (dir == SOUTH) y_curr--;
-		if (dir == NORTH) y_curr++;
-	}
-}
-
-
 
 /* Update the the distances of the maze with new wall info */
 void Runner_flood_fill(){
@@ -112,6 +68,120 @@ void Runner_flood_fill(){
 				}
 			}
 }
+
+/* record the directions to get to the center */
+void Runner_find_directions(int x_target, int y_target){
+	curr_dir = NORTH;
+
+	Runner_maze_init(x_target, y_target);
+	//first call flood fill
+	Runner_flood_fill();
+	int x_curr = 0, y_curr = 0;
+	int i = 0, j = 0;
+	while(1) {
+		if (x_curr == x_target && y_curr == y_target) {
+			maze[i][j] = (maze[i][j]&0xFFFF0FF);
+			break;
+		}
+		int dir = 0;
+		int min = 256;
+		if (x_curr > 0) {
+			if (maze_flood_fill[x_curr - 1][y_curr] < min && !(maze[x_curr][y_curr] & (1 << WEST)) && (maze[x_curr - 1][y_curr] & (1 << VISITED_BIT_POSITION))) {
+				min = maze_flood_fill[x_curr - 1][y_curr];
+				dir = WEST;
+			}
+		}
+		if (x_curr < 16) {
+			if (maze_flood_fill[x_curr + 1][y_curr] < min && !(maze[x_curr][y_curr] & (1 << EAST))   && (maze[x_curr + 1][y_curr] & (1 << VISITED_BIT_POSITION))) {
+				min = maze_flood_fill[x_curr + 1][y_curr];
+				dir = EAST;
+			}
+		}
+		if (y_curr > 0) {
+			if (maze_flood_fill[x_curr][y_curr - 1] < min && !(maze[x_curr][y_curr] & (1 << SOUTH))  && (maze[x_curr][y_curr -1 ] & (1 << VISITED_BIT_POSITION))) {
+				min = maze_flood_fill[x_curr][y_curr - 1];
+				dir = SOUTH;
+			}
+		}
+		if (y_curr < 16) {
+			if (maze_flood_fill[x_curr][y_curr + 1] < min && !(maze[x_curr][y_curr] & (1 << NORTH))  && (maze[x_curr][y_curr+1] & (1 << VISITED_BIT_POSITION))) {
+				min = maze_flood_fill[x_curr][y_curr + 1];
+				dir = NORTH;
+			}
+		}
+
+		int turn = 0;
+
+		if (curr_dir == dir) {
+			turn = STRAIGHT;
+		}
+		else {
+			//left turn
+			if ( ((curr_dir + 1) % 4) == dir ) {
+				turn = RIGHT;
+				curr_dir = dir;
+			}
+			//right turn
+			else {
+				turn = LEFT;
+				curr_dir = ((curr_dir +3) % 4);
+			}
+		}
+
+
+		maze[i][j] = (maze[i][j]&0xFFFF0FF) | (turn << DIRECTION);
+		//this marks that this is on the path
+		maze[i][j] = maze[i][j] | (1 << (DIRECTION + 2));
+		i = (i + 1) % 16;
+		if (i == 0) {
+			j++;
+		}
+		if (dir == WEST) x_curr--;
+		if (dir == EAST) x_curr++;
+		if (dir == SOUTH) y_curr--;
+		if (dir == NORTH) y_curr++;
+	}
+}
+
+void Runner_speed_run(){
+	int x = 0;
+	int y = 0;
+	int done = 0;
+	for (int j = 0; j < 16; j++) {
+		for (int i = 0; i < 16; i++) {
+			if (!((maze[i][j] >> (DIRECTION + 2)) & 1)) {
+				done = 1;
+				return;
+			}
+			int turn = (maze[i][j] >> DIRECTION) & 0x3;
+			if (turn == STRAIGHT) {
+				Driver_go_straight(CELL_WIDTH, RUNNING_SPEED);
+				Driver_go_straight(0, 0);
+			}
+			else if (turn == LEFT) {
+						Driver_go_straight(HALF_CELL_WIDTH, RUNNING_SPEED);
+						Controller_frontwall_corection();
+						Driver_go_straight(0, 0);
+						Driver_turn_left(0, 90, TURNING_SPEED);
+						Driver_go_straight(0, 0);
+						Driver_go_straight(HALF_CELL_WIDTH, RUNNING_SPEED);
+						Driver_go_straight(0, 0);
+			}
+			else if (turn == RIGHT) {
+						Driver_go_straight(HALF_CELL_WIDTH, RUNNING_SPEED);
+						Controller_frontwall_corection();
+						Driver_go_straight(0, 0);
+						Driver_turn_right(0, 90, TURNING_SPEED);
+						Driver_go_straight(0, 0);
+						Driver_go_straight(HALF_CELL_WIDTH, RUNNING_SPEED);
+						Driver_go_straight(0, 0);
+			}
+		}
+	}
+
+
+}
+
 
 /*
 // Update distances according to new wall info found at x and y

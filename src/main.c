@@ -34,9 +34,52 @@ int main(void) {
 
 
 	// 3. START PROGRAM - choose mode -------------------------------------------------
-	mode = MODE_TEST_SENSORS;//MODE_EXPLORE;
+	mode = MODE_DEFAULT;//MODE_EXPLORE;
 	while (1){
 
+
+	/* ===============================================================	*/
+	/*
+	 * Test encoder count by going straight-------------------
+	 */
+	while (mode == MODE_TEST_SPEED_RUN){
+		/*
+		 * BEFORE START ANY FUNCTION REMEMBER TO RESET FUNC_TERMINATED SIGNAL
+		 */
+		FUNC_TERMINATED = 0;
+
+		/* Warning before save to flash*/
+		for (int cnt = 0; cnt < 5; cnt ++){
+			ALL_LED_ON;
+			delay_ms(200);
+			ALL_LED_OFF;
+			delay_ms(200);
+		}
+
+		delay_ms (200);
+		Runner_find_directions(2,2);
+		delay_ms (200);
+
+		while (!(Controller_checkwall() & (1 << FRONTWALL_BIT_POSITION))) {
+			ALL_LED_OFF;
+			LED2_ON;
+			/* Delay 5ms */
+			delay_ms(5);
+		}
+		LED2_OFF;
+		delay_ms(1000);
+
+		Runner_speed_run();
+
+		/*
+		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
+		 */
+		if (FUNC_TERMINATED){
+			mode = MODE_DEFAULT;
+		}
+
+		mode = MODE_DEFAULT;
+	}
 
 	/* ===============================================================	*/
 	/*
@@ -52,7 +95,9 @@ int main(void) {
 		 */
 		Driver_go_straight(5*CELL_WIDTH, EXPLORE_RUNNING_SPEED);
 		Driver_go_straight(0,0);
-		delay_ms (10000);
+		delay_ms (200);
+
+		mode = MODE_DEFAULT;
 	}
 	/* ===============================================================	*/
 
@@ -149,6 +194,49 @@ int main(void) {
 		Driver_go_straight(0,0);
 		delay_ms(500);
 
+		mode = MODE_DEFAULT;
+		delay_ms (100);
+
+
+
+	}
+	/* ===============================================================	*/
+
+
+
+	/* ===============================================================	*/
+	/*
+	 * Test curve turn-------------------
+	 */
+	while (mode == MODE_READ_FLASH){
+		/*
+		 * BEFORE START ANY FUNCTION REMEMBER TO RESET FUNC_TERMINATED SIGNAL
+		 */
+		FUNC_TERMINATED = 0;
+
+		/* Warning before read from flash*/
+		for (int cnt = 0; cnt < 5; cnt ++){
+			LED1_ON;
+			LED6_ON;
+			delay_ms(200);
+			LED1_OFF;
+			LED6_OFF;
+			delay_ms(200);
+		}
+		/* Read maze from flash */
+		Controller_readMazeFlash();
+		delay_ms (5000);
+
+		/* Notify after read from flash*/
+		for (int cnt = 0; cnt < 5; cnt ++){
+			LED1_ON;
+			delay_ms(200);
+			LED1_OFF;
+			delay_ms(200);
+		}
+
+		/* Return to MODE_DEFAULT */
+		mode = MODE_DEFAULT;
 		/*
 		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
 		 */
@@ -156,12 +244,60 @@ int main(void) {
 			mode = MODE_DEFAULT;
 		}
 
-		delay_ms (10000);
+		delay_ms (100);
 
 
 
 	}
 	/* ===============================================================	*/
+
+
+	/* ===============================================================	*/
+	/*
+	 * WRITE DATA TO FLASH-------------------
+	 */
+	while (mode == MODE_WRITE_FLASH){
+		/*
+		 * BEFORE START ANY FUNCTION REMEMBER TO RESET FUNC_TERMINATED SIGNAL
+		 */
+		FUNC_TERMINATED = 0;
+
+		/* Warning before read from flash*/
+		for (int cnt = 0; cnt < 5; cnt ++){
+			LED2_ON;
+			delay_ms(200);
+			LED2_OFF;
+			delay_ms(200);
+		}
+		/* Read maze from flash */
+		/* Save the maze to flash */
+		Controller_writeFlash();
+		delay_ms (5000);
+
+		/* Notify after read from flash*/
+		for (int cnt = 0; cnt < 5; cnt ++){
+			LED5_ON;
+			delay_ms(200);
+			LED5_OFF;
+			delay_ms(200);
+		}
+
+		/* Return to MODE_DEFAULT */
+		mode = MODE_DEFAULT;
+		/*
+		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
+		 */
+		if (FUNC_TERMINATED){
+			mode = MODE_DEFAULT;
+		}
+
+		delay_ms (100);
+
+
+
+	}
+	/* ===============================================================	*/
+
 
 
 	/* ===============================================================	*/
@@ -183,20 +319,23 @@ int main(void) {
 		turn = STRAIGHT;
 
 		/* Warning before read from flash*/
-		for (int cnt = 0; cnt < 10; cnt ++){
-			LED1_ON;
-			LED6_ON;
+		for (int cnt = 0; cnt < 5; cnt ++){
+			LED3_ON;
 			delay_ms(200);
-			LED1_OFF;
-			LED6_OFF;
+			LED3_OFF;
 			delay_ms(200);
 		}
-		/* Read maze from flash */
-		Controller_readMazeFlash();
-		delay_ms (8000);
+
+		while (!(Controller_checkwall() & (1 << FRONTWALL_BIT_POSITION))) {
+			LED1_ON;
+			/* Delay 5ms */
+			delay_ms(5);
+		}
+		LED1_OFF;
+		delay_ms(1000);
 
 		/* Explore to the center */
-		Runner_explore(2,2);
+		Runner_explore(7,7);
 
 		/* Warning before save to flash*/
 		for (int cnt = 0; cnt < 10; cnt ++){
@@ -207,12 +346,13 @@ int main(void) {
 		}
 		/* Save the maze to flash */
 		Controller_writeFlash();
-		delay_ms (8000);
+		delay_ms (5000);
 
+		/* Go back to origin */
 		Runner_explore(0,0);
-		delay_ms (5000);
-		Runner_explore(2,2);
-		delay_ms (5000);
+		delay_ms (200);
+
+		mode = MODE_DEFAULT;
 
 		/*
 		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
@@ -221,7 +361,6 @@ int main(void) {
 			mode = MODE_DEFAULT;
 		}
 
-		mode = MODE_DEFAULT;
 	}
 	/* ===============================================================	*/
 
@@ -310,12 +449,12 @@ int main(void) {
 		FUNC_TERMINATED = 0;
 
 		for (int i = 0; i<5; i++){
-			LED1_ON;
-			delay_ms(500);
-			LED1_OFF;
-			delay_ms(500);
+			ALL_LED_ON;
+			delay_ms(200);
+			ALL_LED_OFF;
+			delay_ms(200);
 		}
-
+		mode = Controller_mode_select();
 		/*
 		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
 		 */

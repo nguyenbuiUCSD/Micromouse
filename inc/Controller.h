@@ -23,4 +23,5 @@ void Controller_button2_interrupt_handler(void);
 int Controller_checkwall(void);
 void Controller_readMazeFlash(void);
 void Controller_writeFlash(void);
+int Controller_mode_select();
 #endif /* CONTROLLER_H_ */
