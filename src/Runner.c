@@ -31,6 +31,7 @@ void Runner_maze_init(int x_target, int y_target){
 }
 /* record the directions to get to the center */
 void Runner_find_directions(int x_target, int y_target){
+	curr_dir = NORTH;
 	//first call flood fill
 	Runner_flood_fill();
 	int x_curr = 0, y_curr = 0;
@@ -64,7 +65,32 @@ void Runner_find_directions(int x_target, int y_target){
 				dir = NORTH;
 			}
 		}
-		maze[x_curr][y_curr] = maze[x_curr][y_curr] | (1 << DIRECTION << dir);
+
+		int turn = 0;
+
+		if (curr_dir == dir) {
+			turn = STRAIGHT;
+		}
+		else {
+			//left turn
+			if ( ((curr_dir << 1) % 4) == dir ) {
+				turn = RIGHT;
+				curr_dir = ((curr_dir << 1) % 4);
+			}
+			//right turn
+			else {
+				turn = LEFT;
+				if (curr_dir == 0) {
+					curr_dir = 3;
+				}
+				else {
+					curr_dir = ((curr_dir >> 1) % 4);
+				}
+			}
+		}
+
+
+		maze[x_curr][y_curr] = maze[x_curr][y_curr] | (turn << DIRECTION);
 		if (dir == WEST) x_curr--;
 		if (dir == EAST) x_curr++;
 		if (dir == SOUTH) y_curr--;
