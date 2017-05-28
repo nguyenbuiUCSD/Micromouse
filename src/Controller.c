@@ -89,6 +89,7 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 	left_EN = getLeftDistance();
 	right_EN = getRightDistance();
 
+	int crr_case = 0;
 	// This line of code can cause trouble if the encoder rigister is overflow
 	// Loop until mice finish the given distance
 	// Distance is allway positive, this was calculated from caller (Driver)
@@ -104,13 +105,17 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 
 			// CASE 1: have both wall
 			if ((LDSensor > DIAGNAL_LEFT_THRESHOLD) &&((RDSensor > DIAGNAL_RIGHT_THRESHOLD))){
+				if (crr_case != 1){
+					temp = 0;
+					crr_case = 1;
+				}
 				if (temp > 200){
-					if (LDSensor > (CENTER_TO_LEFT_WALL-70)){
+					if (LDSensor > (CENTER_TO_LEFT_WALL)){
 						wall_err = (LDSensor - CENTER_TO_LEFT_WALL)/SENSOR_RATIO;
 						// Check if error is valid for correction ( too far from wall)
 						if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
 						if (wall_err < -(MAX_SENSOR_ERR)) wall_err = -(MAX_SENSOR_ERR);
-					} else if (RDSensor > (CENTER_TO_RIGHT_WALL-50)){
+					} else if (RDSensor > (CENTER_TO_RIGHT_WALL)){
 						wall_err = -(RDSensor - CENTER_TO_RIGHT_WALL)/SENSOR_RATIO;
 						// Check if error is valid for correction ( too far from wall)
 						if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
@@ -126,8 +131,12 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 
 			// CASE 2: have left wall
 			} else if (LDSensor > DIAGNAL_LEFT_THRESHOLD){
+				if (crr_case != 2){
+					temp = 0;
+					crr_case = 2;
+				}
 				if (temp > 200){
-					if (LDSensor > (CENTER_TO_LEFT_WALL-100)){
+					if (LDSensor > (CENTER_TO_LEFT_WALL-80)){
 						wall_err = (LDSensor - CENTER_TO_LEFT_WALL)/SENSOR_RATIO;
 						// Check if error is valid for correction ( too far from wall)
 						if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
@@ -145,8 +154,12 @@ void Controller_run(int left_distance, int right_distance, int left_speed, int r
 				//TODO: implement something to distiquist these case
 				// reset value when switch case
 			} else if (RDSensor > DIAGNAL_RIGHT_THRESHOLD){
+				if (crr_case != 3){
+					temp = 0;
+					crr_case = 3;
+				}
 				if (temp > 200){
-					if (RDSensor > (CENTER_TO_RIGHT_WALL-80)){
+					if (RDSensor > (CENTER_TO_RIGHT_WALL-60)){
 						wall_err = -(RDSensor - CENTER_TO_RIGHT_WALL)/SENSOR_RATIO;
 						// Check if error is valid for correction ( too far from wall)
 						if (wall_err > (MAX_SENSOR_ERR)) wall_err = MAX_SENSOR_ERR;
@@ -403,15 +416,15 @@ int Controller_mode_select(){
 			ALL_LED_OFF;
 			LED4_ON;
 		}else if ((encode_val > 9000)&&(encode_val < 11001)){
-			mode = MODE_TEST_SHARP_TURN;//right red
+			mode = MODE_TEST_SHARP_TURN;//right red // Random  - left prio
 			ALL_LED_OFF;
 			LED5_ON;
 		}else if ((encode_val > 11000)&&(encode_val < 13001)){
-			mode = MODE_TEST_CURVE_TURN ;//right blue
+			mode = MODE_EXPLORE_WITHOUT_SAVE_MAZE ;//right blue
 			ALL_LED_OFF;
 			LED6_ON;
 		}else{
-			mode = MODE_TEST_GO_STRAIGHT;//2 side led
+			mode = MODE_TEST_GO_STRAIGHT;//2 side led Random 2 - right prio
 			LED1_ON;
 			LED4_ON;
 		}

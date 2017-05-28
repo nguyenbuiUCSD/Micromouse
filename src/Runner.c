@@ -69,118 +69,61 @@ void Runner_flood_fill(){
 			}
 }
 
-/* record the directions to get to the center */
-void Runner_find_directions(int x_target, int y_target){
-	curr_dir = NORTH;
-
-	Runner_maze_init(x_target, y_target);
-	//first call flood fill
-	Runner_flood_fill();
-	int x_curr = 0, y_curr = 0;
-	int i = 0, j = 0;
-	while(1) {
-		if (x_curr == x_target && y_curr == y_target) {
-			maze[i][j] = (maze[i][j]&0xFFFF0FF);
-			break;
-		}
-		int dir = 0;
-		int min = 256;
-		if (x_curr > 0) {
-			if (maze_flood_fill[x_curr - 1][y_curr] < min && !(maze[x_curr][y_curr] & (1 << WEST)) && (maze[x_curr - 1][y_curr] & (1 << VISITED_BIT_POSITION))) {
-				min = maze_flood_fill[x_curr - 1][y_curr];
-				dir = WEST;
-			}
-		}
-		if (x_curr < 16) {
-			if (maze_flood_fill[x_curr + 1][y_curr] < min && !(maze[x_curr][y_curr] & (1 << EAST))   && (maze[x_curr + 1][y_curr] & (1 << VISITED_BIT_POSITION))) {
-				min = maze_flood_fill[x_curr + 1][y_curr];
-				dir = EAST;
-			}
-		}
-		if (y_curr > 0) {
-			if (maze_flood_fill[x_curr][y_curr - 1] < min && !(maze[x_curr][y_curr] & (1 << SOUTH))  && (maze[x_curr][y_curr -1 ] & (1 << VISITED_BIT_POSITION))) {
-				min = maze_flood_fill[x_curr][y_curr - 1];
-				dir = SOUTH;
-			}
-		}
-		if (y_curr < 16) {
-			if (maze_flood_fill[x_curr][y_curr + 1] < min && !(maze[x_curr][y_curr] & (1 << NORTH))  && (maze[x_curr][y_curr+1] & (1 << VISITED_BIT_POSITION))) {
-				min = maze_flood_fill[x_curr][y_curr + 1];
-				dir = NORTH;
-			}
-		}
-
-		int turn = 0;
-
-		if (curr_dir == dir) {
-			turn = STRAIGHT;
-		}
-		else {
-			//left turn
-			if ( ((curr_dir + 1) % 4) == dir ) {
-				turn = RIGHT;
-				curr_dir = dir;
-			}
-			//right turn
-			else {
-				turn = LEFT;
-				curr_dir = ((curr_dir +3) % 4);
-			}
-		}
-
-
-		maze[i][j] = (maze[i][j]&0xFFFF0FF) | (turn << DIRECTION);
-		//this marks that this is on the path
-		maze[i][j] = maze[i][j] | (1 << (DIRECTION + 2));
-		i = (i + 1) % 16;
-		if (i == 0) {
-			j++;
-		}
-		if (dir == WEST) x_curr--;
-		if (dir == EAST) x_curr++;
-		if (dir == SOUTH) y_curr--;
-		if (dir == NORTH) y_curr++;
-	}
-}
 
 void Runner_speed_run(){
-	int x = 0;
-	int y = 0;
-	int done = 0;
-	for (int j = 0; j < 16; j++) {
-		for (int i = 0; i < 16; i++) {
-			if (!((maze[i][j] >> (DIRECTION + 2)) & 1)) {
-				done = 1;
+
+	for (int x = 0; x < 16; x++) {
+		for (int y = 0; y < 16; y++) {
+			if (!((maze[x][y] >> (DIRECTION + 2)) & 1)) {
 				return;
 			}
-			int turn = (maze[i][j] >> DIRECTION) & 0x3;
+			int turn = (maze[x][y] >> DIRECTION) & 0x3;
 			if (turn == STRAIGHT) {
 				Driver_go_straight(CELL_WIDTH, RUNNING_SPEED);
 				Driver_go_straight(0, 0);
 			}
 			else if (turn == LEFT) {
 						Driver_go_straight(HALF_CELL_WIDTH, RUNNING_SPEED);
-						Controller_frontwall_corection();
-						Driver_go_straight(0, 0);
 						Driver_turn_left(0, 90, TURNING_SPEED);
-						Driver_go_straight(0, 0);
 						Driver_go_straight(HALF_CELL_WIDTH, RUNNING_SPEED);
-						Driver_go_straight(0, 0);
 			}
 			else if (turn == RIGHT) {
 						Driver_go_straight(HALF_CELL_WIDTH, RUNNING_SPEED);
-						Controller_frontwall_corection();
-						Driver_go_straight(0, 0);
 						Driver_turn_right(0, 90, TURNING_SPEED);
-						Driver_go_straight(0, 0);
 						Driver_go_straight(HALF_CELL_WIDTH, RUNNING_SPEED);
-						Driver_go_straight(0, 0);
 			}
 		}
 	}
 
 
 }
+
+
+
+void Runner_speed_curve_trun(){
+
+	for (int x = 0; x < 16; x++) {
+		for (int y = 0; y < 16; y++) {
+			if (!((maze[x][y] >> (DIRECTION + 2)) & 1)) {
+				return;
+			}
+			int turn = (maze[x][y] >> DIRECTION) & 0x3;
+			if (turn == STRAIGHT) {
+				Driver_go_straight(CELL_WIDTH, RUNNING_SPEED);
+			}
+			else if (turn == LEFT) {
+						Driver_turn_left(90, 90, TURNING_SPEED);
+			}
+			else if (turn == RIGHT) {
+						Driver_turn_right(90, 90, TURNING_SPEED);
+			}
+		}
+	}
+
+
+}
+
+
 
 
 /*
@@ -282,7 +225,7 @@ void Runner_random_turn() {
 
 		int walls_info = Driver_checkwalls();
 
-		random_num = Micros % 3;
+		random_num = 1;
 
 		switch(random_num){
 			case 0: // front -> left -> right
@@ -453,7 +396,7 @@ void Runner_random_turn() {
 			break;
 		}
 
-		if(x_coord == 4 && y_coord == 4) {
+		if(x_coord == 7 && y_coord == 7) {
 			Driver_go_straight(0,0);
 			return;
 		}
@@ -522,7 +465,7 @@ void Runner_random_turn_two() {
 
 		// Make the turn
 
-		random_num = Micros % 3;
+		random_num = 2;
 
 		switch(random_num){
 			case 0: // front -> left -> right
@@ -989,4 +932,187 @@ void Runner_explore(int x_target, int y_target) {
 }
 
 
+
+void Runner_find_directions(int x_target, int y_target) {
+	 //Start from the middle of cell move half then read value
+
+	int x=0,y=0;
+
+	Runner_maze_init (x_target,y_target);
+
+
+	maze[x][y] = (maze[x][y]&0xFFFF0FF) | (STRAIGHT << DIRECTION);
+	//this marks that this is on the path
+	maze[x][y] = maze[x][y] | (1 << (DIRECTION + 2));
+	y = (y + 1) % 16;
+	if (y == 0) {
+		x++;
+	}
+
+
+	/* For first cell - always run forward */
+	if (x_coord == 0 && y_coord == 0){
+		maze[0][0]&= 0xFFFFFFE0;
+		maze[0][0]|= 0x1E;
+	}
+	switch(curr_dir) {
+	case NORTH:
+		y_coord++;
+		break;
+
+	case EAST:
+		x_coord++;
+		break;
+
+	case SOUTH:
+		y_coord--;
+		break;
+
+	case WEST:
+		x_coord--;
+		break;
+	}
+
+
+	/*
+	 * If target is not reached - Flood fill and run
+	 */
+	Runner_flood_fill();
+
+	while (1){
+
+		/* CHECK IF USER SEND A SIGNAL TO TERMINATE CURRENT FUCTION */
+		if (FUNC_TERMINATED){
+			return;
+		}
+
+
+		int cur_dst, next_direction ;
+		/*************************/
+
+		/*
+		 * After saze the current cell info, check if current cell is target or not
+		 */
+		/* Check if we reach the target - if yes rotate back to be ready for new run*/
+		if(x_coord == x_target && y_coord == y_target) {
+			maze[x][y] = (maze[x][y]&0xFFFF0FF);
+			return;
+		}
+
+
+
+
+
+
+
+		/* Run either update distances of flood_fill */
+		/* Using Stack */
+		/* Runner_update_distances(x_coord, y_coord, curr);*/
+
+		/*
+		 * Check distance of open neighbors
+		 */
+		cur_dst = maze_flood_fill[x_coord][y_coord];
+
+		next_direction = UNKNOWN_DIRECTION;
+
+		int n, e, s, w;
+		n = (maze[x_coord][y_coord] >> NORTH) & 1;
+		e = (maze[x_coord][y_coord] >> EAST)  & 1;
+		s = (maze[x_coord][y_coord] >> SOUTH) & 1;
+		w = (maze[x_coord][y_coord] >> WEST) & 1;
+		/* Check NORTH neighbor */
+		if (!n){
+			if ((maze_flood_fill[x_coord][y_coord+1] == cur_dst - 1) && ((maze[x_coord][y_coord+1] >> VISITED_BIT_POSITION) & 1)){
+				next_direction = NORTH;
+			}
+		}
+		/* Check EAST neighbor */
+		if (!e){
+			if ((maze_flood_fill[x_coord+1][y_coord] == cur_dst - 1) && ((maze[x_coord+1][y_coord] >> VISITED_BIT_POSITION) & 1)){
+				next_direction = EAST;
+			}
+		}
+		/* Check SOUTH neighbor */
+		if (!s){
+			if ((maze_flood_fill[x_coord][y_coord-1] == cur_dst - 1) && ((maze[x_coord][y_coord-1] >> VISITED_BIT_POSITION) & 1)){
+				next_direction = SOUTH;
+			}
+		}
+		/* Check WEST neighbor */
+		if (!w){
+			if ((maze_flood_fill[x_coord-1][y_coord] == cur_dst - 1) && ((maze[x_coord-1][y_coord] >> VISITED_BIT_POSITION) & 1)){
+				next_direction = WEST;
+			}
+		}
+
+		/*
+		 * Decide where to turn
+		 */
+		if (next_direction == UNKNOWN_DIRECTION){
+			/*
+			 * ERORR_________
+			 */
+			int error_count = 0;
+			while (1){
+				if (error_count < 10) {
+					Driver_turn_right(0, EXPLORE_RIGHT_TURN_ANGLE, EXPLORE_TURNING_SPEED);
+					error_count ++;
+				} else {
+					Driver_go_straight(0, 0);
+				}
+
+				/* CHECK IF USER SEND A SIGNAL TO TERMINATE CURRENT FUCTION */
+				if (FUNC_TERMINATED){
+					return;
+				}
+
+			}
+		} else {
+			if (next_direction == curr_dir)
+				turn = STRAIGHT;
+			else if (next_direction == (curr_dir + 1)%4)
+				turn = RIGHT;
+			else if (next_direction == (curr_dir + 3)%4)
+				turn = LEFT;
+			else if (next_direction == (curr_dir + 2)%4)
+				turn = UTURN;
+		}
+
+
+
+
+
+		maze[x][y] = (maze[x][y]&0xFFFF0FF) | (turn << DIRECTION);
+		//this marks that this is on the path
+		maze[x][y] = maze[x][y] | (1 << (DIRECTION + 2));
+		y = (y + 1) % 16;
+		if (y == 0) {
+			x++;
+		}
+
+
+		curr_dir = next_direction;
+
+		switch(curr_dir) {
+		case NORTH:
+			y_coord++;
+			break;
+
+		case EAST:
+			x_coord++;
+			break;
+
+		case SOUTH:
+			y_coord--;
+			break;
+
+		case WEST:
+			x_coord--;
+			break;
+		}
+
+
+	}
+}
 

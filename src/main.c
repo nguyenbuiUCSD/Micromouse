@@ -48,6 +48,14 @@ int main(void) {
 		 */
 		FUNC_TERMINATED = 0;
 
+		/*
+		 * Remember to reset current position if restart from [0,0]
+		 */
+		x_coord = 0;
+		y_coord = 0;
+		curr_dir = NORTH;
+		turn = STRAIGHT;
+
 		/* Warning before save to flash*/
 		for (int cnt = 0; cnt < 5; cnt ++){
 			ALL_LED_ON;
@@ -57,7 +65,7 @@ int main(void) {
 		}
 
 		delay_ms (200);
-		Runner_find_directions(2,2);
+		Runner_find_directions(7,7);
 		delay_ms (200);
 
 		while (!(Controller_checkwall() & (1 << FRONTWALL_BIT_POSITION))) {
@@ -93,8 +101,9 @@ int main(void) {
 		/*
 		 * Go straight for 3 cell
 		 */
-		Driver_go_straight(5*CELL_WIDTH, EXPLORE_RUNNING_SPEED);
-		Driver_go_straight(0,0);
+//		Driver_go_straight(5*CELL_WIDTH, EXPLORE_RUNNING_SPEED);
+//		Driver_go_straight(0,0);
+		Runner_random_turn_two();
 		delay_ms (200);
 
 		mode = MODE_DEFAULT;
@@ -113,9 +122,11 @@ int main(void) {
 		 */
 		FUNC_TERMINATED = 0;
 
+		Runner_random_turn();
+
 		/*
 		 * Turn right 4 times. then turn left 4 times
-		 */
+
 		Driver_turn_right(0,EXPLORE_RIGHT_TURN_ANGLE,EXPLORE_TURNING_SPEED);
 		Driver_go_straight(0,0);
 		delay_ms(500);
@@ -143,6 +154,8 @@ int main(void) {
 		delay_ms(500);
 
 		delay_ms (10000);
+		*/
+
 
 	}
 	/* ===============================================================	*/
@@ -338,15 +351,92 @@ int main(void) {
 		Runner_explore(7,7);
 
 		/* Warning before save to flash*/
-		for (int cnt = 0; cnt < 10; cnt ++){
+		for (int cnt = 0; cnt < 5; cnt ++){
 			ALL_LED_ON;
 			delay_ms(200);
 			ALL_LED_OFF;
 			delay_ms(200);
 		}
+		/*
+		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
+		 */
+		if (FUNC_TERMINATED){
+			mode = MODE_DEFAULT;
+			continue;
+		}
 		/* Save the maze to flash */
 		Controller_writeFlash();
 		delay_ms (5000);
+
+		/* Go back to origin */
+		Runner_explore(0,0);
+		delay_ms (200);
+
+		mode = MODE_DEFAULT;
+
+		/*
+		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
+		 */
+		if (FUNC_TERMINATED){
+			mode = MODE_DEFAULT;
+		}
+
+	}
+	/* ===============================================================	*/
+
+
+
+	/* ===============================================================	*/
+	/*
+	 * RUN EXPLORE - DONT SAVE THE MAZE------------------
+	 */
+	while (mode == MODE_EXPLORE_WITHOUT_SAVE_MAZE){
+		/*
+		 * BEFORE START ANY FUNCTION REMEMBER TO RESET FUNC_TERMINATED SIGNAL
+		 */
+		FUNC_TERMINATED = 0;
+
+		/*
+		 * Remember to reset current position if restart from [0,0]
+		 */
+		x_coord = 0;
+		y_coord = 0;
+		curr_dir = NORTH;
+		turn = STRAIGHT;
+
+		/* Warning before read from flash*/
+		for (int cnt = 0; cnt < 5; cnt ++){
+			LED3_ON;
+			delay_ms(200);
+			LED3_OFF;
+			delay_ms(200);
+		}
+
+		while (!(Controller_checkwall() & (1 << FRONTWALL_BIT_POSITION))) {
+			LED1_ON;
+			/* Delay 5ms */
+			delay_ms(5);
+		}
+		LED1_OFF;
+		delay_ms(1000);
+
+		/* Explore to the center */
+		Runner_explore(7,7);
+
+		/* Warning before save to flash*/
+		for (int cnt = 0; cnt < 5; cnt ++){
+			ALL_LED_ON;
+			delay_ms(200);
+			ALL_LED_OFF;
+			delay_ms(200);
+		}
+		/*
+		 * HANDLE THE CASE FUNCTION IS TERMINATED BEFORE FINISH
+		 */
+		if (FUNC_TERMINATED){
+			mode = MODE_DEFAULT;
+			continue;
+		}
 
 		/* Go back to origin */
 		Runner_explore(0,0);
