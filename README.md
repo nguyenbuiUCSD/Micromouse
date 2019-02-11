@@ -35,3 +35,14 @@ Main -> Runner -> Driver -> Controller -> Standard Peripheral library -> Hardwar
 |         |         |-------------------> Drive the mouse with left turn, right turn, ... used all fcns from Controller lyer
 |         |-----------------------------> Maze solving algorithm, include search and solve the maze.
 |---------------------------------------> User interface.
+
+DEMO
+![13254728_1119412674748494_8515416766969404322_o](https://user-images.githubusercontent.com/17399214/52556339-1b267300-2da1-11e9-924a-cdbe3c65e2e5.jpg)
+![13217428_1119412684748493_9006213683976071644_o](https://user-images.githubusercontent.com/17399214/52556336-1a8ddc80-2da1-11e9-9239-3a01d868f351.jpg)
+
+![13247932_1119412634748498_1958810507137196921_o](https://user-images.githubusercontent.com/17399214/52556333-1a8ddc80-2da1-11e9-9968-96d6779f3ae4.jpg)
+![13244185_1119412681415160_3168289892820804519_o](https://user-images.githubusercontent.com/17399214/52556332-1a8ddc80-2da1-11e9-94e3-c79955422922.jpg)
+![13235345_1119412661415162_97589979850380628_o](https://user-images.githubusercontent.com/17399214/52556331-1a8ddc80-2da1-11e9-9abc-82f7e3ea8e94.jpg)
+
+![13254925_1119412618081833_4175102874641885381_o](https://user-images.githubusercontent.com/17399214/52556337-1b267300-2da1-11e9-89da-4857ce465a84.jpg)
+
