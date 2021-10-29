@@ -36,7 +36,7 @@ Main -> Runner -> Driver -> Controller -> Standard Peripheral library -> Hardwar
 |         |-----------------------------> Maze solving algorithm, include search and solve the maze.
 |---------------------------------------> User interface.
 
-DEMO:
+2016 IEEE UCSD California Micromouse (CAMM):
 
 https://www.youtube.com/watch?v=ZlR1eT7DGK4
 
